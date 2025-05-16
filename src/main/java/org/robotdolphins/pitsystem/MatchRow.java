@@ -1,0 +1,216 @@
+package org.robotdolphins.pitsystem;
+
+import org.springframework.lang.NonNull;
+
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.ForkJoinPool;
+import java.util.stream.Collectors;
+
+public class MatchRow implements Comparable<MatchRow> {
+    private final String competitionLevel;
+    private final int number;
+    private final String time;
+    private final String winner;
+    private List<StyledText> redAlliance;
+    private final String redScore;
+    private final String blueScore;
+    private List<StyledText> blueAlliance;
+
+    public MatchRow(String competitionLevel, int number, String time, String winner, List<String> redAlliance, String redScore, String blueScore, List<String> blueAlliance) {
+        this.competitionLevel = competitionLevel;
+        this.number = number;
+        this.time = time;
+        this.winner = winner;
+        this.redAlliance = formatAlliance(redAlliance.stream()
+                .map((redTeam) -> new StyledText(redTeam, "normal", "#000000"))
+                .collect(Collectors.toList()), "red");
+        this.redScore = redScore;
+        this.blueScore = blueScore;
+        this.blueAlliance = formatAlliance(blueAlliance.stream()
+                .map((bluTeam) -> new StyledText(bluTeam, "normal", "#000000"))
+                .collect(Collectors.toList()), "blue");
+    }
+
+    public List<StyledText> formatAlliance(List<StyledText> list, String alliance) {
+        ArrayList<StyledText> formattedAlliance = new ArrayList<StyledText>();
+
+        if (alliance.equals("red")) {
+            for (StyledText text : list) {
+                text.setColor(winner.equals("red") ? "#ff0000":"#aa2222");
+                text.setFontWeight(text.getText().equals("5199") ? "bold":"normal");
+                formattedAlliance.add(text);
+            }
+        }
+        if (alliance.equals("blue")) {
+            for (StyledText text : list) {
+                text.setColor(winner.equals("blue") ? "#0000ff":"#2222aa");
+                text.setFontWeight(text.getText().equals("5199") ? "bold":"normal");
+                formattedAlliance.add(text);
+            }
+        }
+        return formattedAlliance;
+    }
+
+    public int getNumber() {
+        return number;
+    }
+
+    public String getCompetitionLevel() {
+        return competitionLevel;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public String getWinner() {
+        return winner;
+    }
+
+    public List<StyledText> getRedAlliance() {
+        return redAlliance;
+    }
+
+    public String getRedScore() {
+        return redScore;
+    }
+
+    public String getBlueScore() {
+        return blueScore;
+    }
+
+    public List<StyledText> getBlueAlliance() {
+        return blueAlliance;
+    }
+
+    public String getMatchName() {
+        return competitionLevel + ": " + number;
+    }
+
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    @Override
+    public String toString() {
+        return "MatchRow{" +
+                "number='" + number + '\'' +
+                ", time='" + time + '\'' +
+                ", winner='" + winner + '\'' +
+                ", redAlliance=" + redAlliance +
+                ", redScore='" + redScore + '\'' +
+                ", blueScore='" + blueScore + '\'' +
+                ", blueAlliance=" + blueAlliance +
+                '}';
+    }
+
+    @Override
+    public int compareTo(@NonNull MatchRow other) {
+        if (this.competitionLevel.equals("Quals")) {
+            if (other.competitionLevel.equals("Quals"))
+                return this.number - other.number;
+            return -1;
+        } if (this.competitionLevel.equals("Finals")) {
+            if (other.competitionLevel.equals("Finals"))
+                return this.number - other.number;
+            return 1;
+        }
+
+        if (other.competitionLevel.equals("Quals"))
+            return 1;
+        if (other.competitionLevel.equals("Finals"))
+            return -1;
+
+        return this.number - other.number;
+    }
+
+    public static class Builder {
+        private String competitionLevel;
+        private int number;
+        private String time;
+        private String winner;
+        private String redScore;
+        private String blueScore;
+        private List<String> redAlliance;
+        private List<String> blueAlliance;
+
+        public Builder number(int number) {
+            this.number = number;
+            return this;
+        }
+
+        public Builder time(String time) {
+            this.time = time;
+            return this;
+        }
+
+        public Builder winner(String winner) {
+            this.winner = winner;
+            return this;
+        }
+
+        public Builder redScore(String redScore) {
+            this.redScore = redScore;
+            return this;
+        }
+
+        public Builder blueScore(String blueScore) {
+            this.blueScore = blueScore;
+            return this;
+        }
+
+        public Builder redAlliance(List<String> redAlliance) {
+            this.redAlliance = redAlliance;
+            return this;
+        }
+
+        public Builder blueAlliance(List<String> blueAlliance) {
+            this.blueAlliance = blueAlliance;
+            return this;
+        }
+
+        public MatchRow build() {
+            return new MatchRow(competitionLevel, number, time, winner, redAlliance, redScore, blueScore, blueAlliance);
+        }
+
+        public Builder competitionLevel(String compLevel) {
+            this.competitionLevel = formatCompLevel(compLevel);
+            return this;
+        }
+
+        private String formatCompLevel(String compLevel) {
+            switch(compLevel) {
+                case "f":
+                    return "Finals";
+                case "sf":
+                    return "Semis";
+                case "qm":
+                    return "Quals";
+                default:
+                    return "Unknown";
+            }
+        }
+    }
+
+    public static class dataCleanse {
+
+        public static int getCompetitionNumber(String compLevel, int matchNumber, int setNumber) {
+            if (compLevel.equals("sf"))
+                return setNumber;
+
+            return matchNumber;
+        }
+
+        public static String getFormattedTime(Long epochTime) {
+            if (epochTime == null)
+                return "TBD";
+            return Instant.ofEpochSecond(epochTime)
+                    .atZone(ZoneId.systemDefault())
+                    .format(DateTimeFormatter.ofPattern("hh:mm a"));
+        }
+    }
+}
