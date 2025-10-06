@@ -7,18 +7,23 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 import java.util.*;
 
 @Service
 public class MatchServices {
     private static final String BASE_URL = "https://www.thebluealliance.com/api/v3/event/";
 
-    public List<Match> getMatchesForEvent() {
+    public List<Match> getMatchesForEvent() throws RestClientException {
         String url = BASE_URL + "/2025caav" + "/matches";
         HttpHeaders headers = new HttpHeaders();
 
@@ -41,15 +46,34 @@ public class MatchServices {
         return null;
     }
 
+    //TODO: fix
+    public List<Match> getMatches(){
+        RestClient matchesRestClient = RestClient.builder()
+                .baseUrl(Config.BASE_URL)
+                .defaultHeader("X-TBA-Auth-Key",Config.getToken())
+                .build();
+        // TODO: find a good place to put "/matches"
+        final String URL_PATH = Config.EVENT_CODE + "/matches";
+        try {
+            return (List<Match>) matchesRestClient.get()
+                    .uri(new URI(URL_PATH))
+                    .retrieve()
+                    .toEntity(List.class)
+                    .getBody();
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public List<Match> filterFor5199(List<Match> allMatches) {
-        List<Match> filteredMatches = new ArrayList<>(List.of());
+        List<Match> filteredMatches = new ArrayList<>();
 
         for (Match match : allMatches) {
             for (String team : match.getAlliances().red().team_keys()) {
-                if (team.contains("5199")) filteredMatches.add(match);
+                if (team.contains(Config.TEAMNUMBER)) filteredMatches.add(match);
             }
             for (String team : match.getAlliances().blue().team_keys()) {
-                if (team.contains("5199")) filteredMatches.add(match);
+                if (team.contains(Config.TEAMNUMBER)) filteredMatches.add(match);
             }
         }
 
@@ -64,7 +88,7 @@ public class MatchServices {
     }
 
 
-    public List<MatchRow> getMatchRowsForUI() {
+    public List<MatchRow> getMatchRowsForUI() throws RestClientException {
         List<Match> matchesForEvent = getMatchesForEvent();
 
         matchesForEvent = filterFor5199(matchesForEvent);

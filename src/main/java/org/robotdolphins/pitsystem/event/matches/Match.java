@@ -1,6 +1,7 @@
 package org.robotdolphins.pitsystem.event.matches;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.robotdolphins.pitsystem.MatchType;
 import org.robotdolphins.pitsystem.event.matches.match.Alliances;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -9,7 +10,7 @@ public class Match {
     long predicted_time;
     long actual_time;
     Alliances alliances;
-    String comp_level;
+    MatchType comp_level;
     String winning_alliance;
 
     public int getSet_number() {
@@ -36,11 +37,11 @@ public class Match {
         this.match_number = match_number;
     }
 
-    public String getComp_level() {
+    public MatchType getComp_level() {
         return comp_level;
     }
 
-    public void setComp_level(String comp_level) {
+    public void setComp_level(MatchType comp_level) {
         this.comp_level = comp_level;
     }
 

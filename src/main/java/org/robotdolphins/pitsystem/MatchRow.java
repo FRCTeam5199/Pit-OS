@@ -11,7 +11,7 @@ import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
 public class MatchRow implements Comparable<MatchRow> {
-    private final String competitionLevel;
+    private final MatchType competitionLevel;
     private final int number;
     private final String time;
     private final String winner;
@@ -20,7 +20,7 @@ public class MatchRow implements Comparable<MatchRow> {
     private final String blueScore;
     private List<StyledText> blueAlliance;
 
-    public MatchRow(String competitionLevel, int number, String time, String winner, List<String> redAlliance, String redScore, String blueScore, List<String> blueAlliance) {
+    public MatchRow(MatchType competitionLevel, int number, String time, String winner, List<String> redAlliance, String redScore, String blueScore, List<String> blueAlliance) {
         this.competitionLevel = competitionLevel;
         this.number = number;
         this.time = time;
@@ -36,19 +36,19 @@ public class MatchRow implements Comparable<MatchRow> {
     }
 
     public List<StyledText> formatAlliance(List<StyledText> list, String alliance) {
-        ArrayList<StyledText> formattedAlliance = new ArrayList<StyledText>();
+        ArrayList<StyledText> formattedAlliance = new ArrayList<>();
 
         if (alliance.equals("red")) {
             for (StyledText text : list) {
                 text.setColor(winner.equals("red") ? "#ff0000":"#aa2222");
-                text.setFontWeight(text.getText().equals("5199") ? "bold":"normal");
+                text.setFontWeight(text.getText().equals(Config.TEAMNUMBER) ? "bold":"normal");
                 formattedAlliance.add(text);
             }
         }
         if (alliance.equals("blue")) {
             for (StyledText text : list) {
                 text.setColor(winner.equals("blue") ? "#0000ff":"#2222aa");
-                text.setFontWeight(text.getText().equals("5199") ? "bold":"normal");
+                text.setFontWeight(text.getText().equals(Config.TEAMNUMBER) ? "bold":"normal");
                 formattedAlliance.add(text);
             }
         }
@@ -59,7 +59,7 @@ public class MatchRow implements Comparable<MatchRow> {
         return number;
     }
 
-    public String getCompetitionLevel() {
+    public MatchType getCompetitionLevel() {
         return competitionLevel;
     }
 
@@ -110,26 +110,26 @@ public class MatchRow implements Comparable<MatchRow> {
 
     @Override
     public int compareTo(@NonNull MatchRow other) {
-        if (this.competitionLevel.equals("Quals")) {
-            if (other.competitionLevel.equals("Quals"))
+        if (this.competitionLevel.equals(MatchType.QUALIFICATION)) {
+            if (other.competitionLevel.equals(MatchType.QUALIFICATION))
                 return this.number - other.number;
             return -1;
-        } if (this.competitionLevel.equals("Finals")) {
-            if (other.competitionLevel.equals("Finals"))
+        } if (this.competitionLevel.equals(MatchType.FINALS)) {
+            if (other.competitionLevel.equals(MatchType.FINALS))
                 return this.number - other.number;
             return 1;
         }
 
-        if (other.competitionLevel.equals("Quals"))
+        if (other.competitionLevel.equals(MatchType.QUALIFICATION))
             return 1;
-        if (other.competitionLevel.equals("Finals"))
+        if (other.competitionLevel.equals(MatchType.FINALS))
             return -1;
 
         return this.number - other.number;
     }
 
     public static class Builder {
-        private String competitionLevel;
+        private MatchType competitionLevel;
         private int number;
         private String time;
         private String winner;
@@ -177,29 +177,25 @@ public class MatchRow implements Comparable<MatchRow> {
             return new MatchRow(competitionLevel, number, time, winner, redAlliance, redScore, blueScore, blueAlliance);
         }
 
-        public Builder competitionLevel(String compLevel) {
-            this.competitionLevel = formatCompLevel(compLevel);
+        public Builder competitionLevel(MatchType compLevel) {
+            this.competitionLevel = compLevel;
             return this;
         }
 
         private String formatCompLevel(String compLevel) {
-            switch(compLevel) {
-                case "f":
-                    return "Finals";
-                case "sf":
-                    return "Semis";
-                case "qm":
-                    return "Quals";
-                default:
-                    return "Unknown";
-            }
+            return switch (compLevel) {
+                case "f" -> "F";
+                case "sf" -> "S";
+                case "qm" -> "Q";
+                default -> "Unknown";
+            };
         }
     }
 
     public static class dataCleanse {
 
-        public static int getCompetitionNumber(String compLevel, int matchNumber, int setNumber) {
-            if (compLevel.equals("sf"))
+        public static int getCompetitionNumber(MatchType compLevel, int matchNumber, int setNumber) {
+            if (compLevel.equals(MatchType.SEMIFINALS))
                 return setNumber;
 
             return matchNumber;

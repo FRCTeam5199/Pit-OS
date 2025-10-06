@@ -64,51 +64,53 @@
 <!--      <tr th:each="match:${matches}">-->
 <!--        <td th:text="${match.match_number}"></td>-->
 <!--    </tr>-->
-    <tr th:each="row:${rows}">
-      <td th:text="${row.matchName}"></td>
-      <td th:text="${row.time}"></td>
-      <span th:if="${row.winner == 'red'}">
+    <tr th:each="match:${MatchRows}">
+      <td th:text="${match.matchName}" style="width: 10%"></td>
+      <td th:text="${match.time}"></td>
+      <span th:if="${match.winner == 'red'}">
         <td class="winCol">
-          <span th:each="team:${row.redAlliance}">&nbsp
+          <span th:each="team:${match.redAlliance}">&nbsp
             <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
           </span>
         </td>
       </span>
-      <span th:unless="${row.winner == 'red'}">
+      <span th:unless="${match.winner == 'red'}">
         <td class="loseCol">
-          <span th:each="team:${row.redAlliance}">&nbsp
+          <span th:each="team:${match.redAlliance}">&nbsp
             <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
           </span>
         </td>
       </span>
 
 
-<!--      <td th:if="${row.winner == 'red'}"><span class="redColWin" th:text="${row.redScore}"></span>-->
-<!--      <td th:unless="${row.winner == 'red'}"><span class="redColLose border" th:text="${row.redScore}"></span>-->
+<!--      <td th:if="${match.winner == 'red'}"><span class="redColWin" th:text="${match.redScore}"></span>-->
+<!--      <td th:unless="${match.winner == 'red'}"><span class="redColLose border" th:text="${match.redScore}"></span>-->
 
-      <a th:if="${row.winner == 'red'}"><td class="redColWin border" th:text="${row.redScore}"></td></a>
-      <a th:unless="${row.winner == 'red'}"><td class="redColLose border" th:text="${row.redScore}"></td></a>
+      <a th:if="${match.winner == 'red'}"><td class="redColWin border" th:text="${match.redScore}"></td></a>
+      <a th:unless="${match.winner == 'red'}"><td class="redColLose border" th:text="${match.redScore}"></td></a>
 
-      <a th:if="${row.winner == 'blue'}"><td class="blueColWin border" th:text="${row.blueScore}"></td></a>
-      <a th:unless="${row.winner == 'blue'}"><td class="blueColLose border" th:text="${row.blueScore}"></td></a>
+      <a th:if="${match.winner == 'blue'}"><td class="blueColWin border" th:text="${match.blueScore}"></td></a>
+      <a th:unless="${match.winner == 'blue'}"><td class="blueColLose border" th:text="${match.blueScore}"></td></a>
 
-      <span th:if="${row.winner == 'blue'}">
+      <span th:if="${match.winner == 'blue'}">
         <td class="winCol">
-          <span th:each="team:${row.blueAlliance}">&nbsp
+          <span th:each="team:${match.blueAlliance}">&nbsp
             <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
           </span>
         </td>
       </span>
-      <span th:unless="${row.winner == 'blue'}">
+      <span th:unless="${match.winner == 'blue'}">
         <td class="loseCol">
-          <span th:each="team:${row.blueAlliance}">&nbsp
+          <span th:each="team:${match.blueAlliance}">&nbsp
             <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
           </span>
         </td>
       </span>
-
     </tr>
     </tbody>
   </table>
 </body>
+<footer>
+  <span th:style="'font-weight: bold; color:#ff4444; display:' + (${connected}? 'none' : 'inline')">NO INTERNET CONNECTION!</span>
+</footer>
 </html>
