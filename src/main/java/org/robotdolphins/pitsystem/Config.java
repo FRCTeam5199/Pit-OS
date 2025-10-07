@@ -8,9 +8,10 @@ public class Config {
     public static final String
             BASE_URL = "https://www.thebluealliance.com/api/v3/event/",
             EVENT_CODE = "2025caav",
-            TEAMNUMBER = "5199";
+            TEAM_NUMBER = "5199",
+            TOKEN = getToken();
 
-    public static String getToken() {
+    private static String getToken() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("./assets/AuthKey"));
             return br.readLine();

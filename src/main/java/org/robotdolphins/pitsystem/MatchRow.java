@@ -7,7 +7,6 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ForkJoinPool;
 import java.util.stream.Collectors;
 
 public class MatchRow implements Comparable<MatchRow> {
@@ -41,14 +40,14 @@ public class MatchRow implements Comparable<MatchRow> {
         if (alliance.equals("red")) {
             for (StyledText text : list) {
                 text.setColor(winner.equals("red") ? "#ff0000":"#aa2222");
-                text.setFontWeight(text.getText().equals(Config.TEAMNUMBER) ? "bold":"normal");
+                text.setFontWeight(text.getText().equals(Config.TEAM_NUMBER) ? "bold":"normal");
                 formattedAlliance.add(text);
             }
         }
         if (alliance.equals("blue")) {
             for (StyledText text : list) {
                 text.setColor(winner.equals("blue") ? "#0000ff":"#2222aa");
-                text.setFontWeight(text.getText().equals(Config.TEAMNUMBER) ? "bold":"normal");
+                text.setFontWeight(text.getText().equals(Config.TEAM_NUMBER) ? "bold":"normal");
                 formattedAlliance.add(text);
             }
         }

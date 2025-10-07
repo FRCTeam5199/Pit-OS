@@ -2,64 +2,32 @@ package org.robotdolphins.pitsystem;
 
 import org.robotdolphins.pitsystem.event.matches.Match;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 
 @Service
 public class MatchServices {
-    private static final String BASE_URL = "https://www.thebluealliance.com/api/v3/event/";
-
-    public List<Match> getMatchesForEvent() throws RestClientException {
-        String url = BASE_URL + "/2025caav" + "/matches";
-        HttpHeaders headers = new HttpHeaders();
-
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("./assets/AuthKey"));
-            headers.set("X-TBA-Auth-Key", br.readLine());
-            br.close();
-            HttpEntity<Void> request = new HttpEntity<>(headers);
-            ResponseEntity<List<Match>> response = new RestTemplate().exchange(
-                    url,
-                    HttpMethod.GET,
-                    request,
-                    new ParameterizedTypeReference<List<Match>>() {
-                    }
-            );
-            return response.getBody();
-        } catch (IOException e) {
-            System.err.println("Error reading Auth Key: " + e.getMessage());
-        }
-        return null;
-    }
-
-    //TODO: fix
     public List<Match> getMatches(){
         RestClient matchesRestClient = RestClient.builder()
                 .baseUrl(Config.BASE_URL)
-                .defaultHeader("X-TBA-Auth-Key",Config.getToken())
+                .defaultHeader("X-TBA-Auth-Key",Config.TOKEN)
                 .build();
         // TODO: find a good place to put "/matches"
         final String URL_PATH = Config.EVENT_CODE + "/matches";
         try {
-            return (List<Match>) matchesRestClient.get()
+            return matchesRestClient.get()
                     .uri(new URI(URL_PATH))
                     .retrieve()
-                    .toEntity(List.class)
-                    .getBody();
+                    .body(new ParameterizedTypeReference<List<Match>>(){});
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -70,10 +38,10 @@ public class MatchServices {
 
         for (Match match : allMatches) {
             for (String team : match.getAlliances().red().team_keys()) {
-                if (team.contains(Config.TEAMNUMBER)) filteredMatches.add(match);
+                if (team.contains(Config.TEAM_NUMBER)) filteredMatches.add(match);
             }
             for (String team : match.getAlliances().blue().team_keys()) {
-                if (team.contains(Config.TEAMNUMBER)) filteredMatches.add(match);
+                if (team.contains(Config.TEAM_NUMBER)) filteredMatches.add(match);
             }
         }
 
@@ -89,7 +57,7 @@ public class MatchServices {
 
 
     public List<MatchRow> getMatchRowsForUI() throws RestClientException {
-        List<Match> matchesForEvent = getMatchesForEvent();
+        List<Match> matchesForEvent = getMatches();
 
         matchesForEvent = filterFor5199(matchesForEvent);
 
