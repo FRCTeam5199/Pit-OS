@@ -46,6 +46,14 @@ background: #003366
 td.loseCol {
 background: #cccccc
 }
-h1 {
-    text-align: center;
+h1.centered {
+display: inline-block;
+position:absolute;
+left:50vw;
+transform: translate(-50%,0%)
+}
+div.heading-block{
+width: 100vw;
+height: 15vh;
+display:block;
 }

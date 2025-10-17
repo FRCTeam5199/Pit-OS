@@ -11,7 +11,14 @@
     <link rel="stylesheet" href="styledpage.css">
 </head>
 <body>
-<h1 style="color: #ffffff;">5199 Match Schedule</h1>
+<div class="heading-block">
+    <div style="display: inline-block; width: 48px; height: 48px;">
+        <img src="favicon.ico" style="width: 48px;" alt="5199 logo">
+    </div>
+    <h1 style="color: #ffffff;"
+        class="centered" th:text="|${config.teamNumber} Match Schedule|">
+    </h1>
+</div>
 <table class="table table-custom text-center">
     <thead class="sticky-top bgCol">
     <tr>
@@ -76,5 +83,6 @@
 </body>
 <footer>
     <span th:style="'font-weight: bold; color:#ff4444; display:' + (${connected}? 'none' : 'inline')">NO INTERNET CONNECTION!</span>
+    <p style="color:#ffffff">The settings page can be found <a href="settings">here</a>!</p>
 </footer>
 </html>

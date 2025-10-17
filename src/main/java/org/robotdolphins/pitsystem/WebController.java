@@ -45,6 +45,7 @@ public class WebController {
     public String getSchedule(Model model) throws IOException {
         model.addAttribute("MatchRows", matchRows);
         model.addAttribute("connected", connected);
+        model.addAttribute("config", ConfigService.defaultConfig);
         return "schedule";
     }
     @GetMapping("/settings")

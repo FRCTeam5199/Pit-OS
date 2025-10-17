@@ -14,10 +14,10 @@ public class MatchRow implements Comparable<MatchRow> {
     private final int number;
     private final String time;
     private final String winner;
-    private List<StyledText> redAlliance;
+    private final List<StyledText> redAlliance;
     private final String redScore;
     private final String blueScore;
-    private List<StyledText> blueAlliance;
+    private final List<StyledText> blueAlliance;
 
     public MatchRow(MatchType competitionLevel, int number, String time, String winner, List<String> redAlliance, String redScore, String blueScore, List<String> blueAlliance) {
         this.competitionLevel = competitionLevel;
