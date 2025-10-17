@@ -1,24 +1,36 @@
 package org.robotdolphins.pitsystem;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 
-public class Config {
-    public static final String
-            BASE_URL = "https://www.thebluealliance.com/api/v3/event/",
-            EVENT_CODE = "2025caav",
-            TEAM_NUMBER = "5199",
-            TOKEN = getToken();
+import java.awt.Color;
 
-    private static String getToken() {
-        try {
-            BufferedReader br = new BufferedReader(new FileReader("./assets/AuthKey"));
-            return br.readLine();
-        } catch (IOException e) {
-            System.err.println("Error reading Auth Key, check permissions and the file \"./assets/AuthKey\" : " + e.getMessage());
-        }
-        System.exit(1);
-        return "This should never EVER go anywhere, the java compiler just requires i provide a default response.";
+public record Config(
+        String baseUrl,
+        String eventCode,
+        String Token,
+        int teamNumber,
+        PageFormat formatting
+) {
+    public record PageFormat(
+            Colors pageColors,
+            String normalFontLocation,
+            String boldFontLocation,
+            int fontSize
+    ){
+        public record Colors(
+                Color bg,
+                Color tableWin,
+                Color tableLose,
+                Color tableRedWin,
+                Color tableRedLose,
+                Color tableBlueWin,
+                Color tableBlueLose,
+                Color textColor,
+                Color textWin,
+                Color textLose,
+                Color textRedWin,
+                Color textRedLose,
+                Color textBlueWin,
+                Color textBlueLose
+        ){}
     }
 }

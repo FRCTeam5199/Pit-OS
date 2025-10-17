@@ -1,0 +1,51 @@
+@font-face {
+font-family: eurostile;
+src: url('5199-fonts/Eurostile-Extended-2-Regular.otf') format('opentype');
+font-weight: normal;
+}
+@font-face {
+font-family: eurostile;
+src: url('5199-fonts/Eurostile-Extended-2-Bold.otf') format('opentype');
+font-weight: bold;
+}
+
+body{
+  background-color: #003366;
+  font-family: eurostile;
+}
+
+.table-custom {
+  --bs-table-bg: transparent !important;
+  --bs-table-color: #ffffff;
+}
+
+td.redColWin {
+background: #FF0000 !important;
+color: white;
+}
+td.redColLose {
+background: #cf0000 !important;
+color: #dddddd;
+}
+
+td.blueColWin {
+background: #0032ff !important;
+color: white;
+}
+td.blueColLose {
+background: #0000df !important;
+color: #dddddd;
+}
+
+td.winCol {
+background: #ffffff;
+}
+thead.bgCol{
+background: #003366
+}
+td.loseCol {
+background: #cccccc
+}
+h1 {
+    text-align: center;
+}

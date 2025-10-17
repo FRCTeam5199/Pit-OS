@@ -18,11 +18,11 @@ import java.util.List;
 public class MatchServices {
     public List<Match> getMatches(){
         RestClient matchesRestClient = RestClient.builder()
-                .baseUrl(Config.BASE_URL)
-                .defaultHeader("X-TBA-Auth-Key",Config.TOKEN)
+                .baseUrl(ConfigService.BASE_URL)
+                .defaultHeader("X-TBA-Auth-Key", ConfigService.token)
                 .build();
         // TODO: find a good place to put "/matches"
-        final String URL_PATH = Config.EVENT_CODE + "/matches";
+        final String URL_PATH = ConfigService.eventCode + "/matches";
         try {
             return matchesRestClient.get()
                     .uri(new URI(URL_PATH))
@@ -38,10 +38,10 @@ public class MatchServices {
 
         for (Match match : allMatches) {
             for (String team : match.getAlliances().red().team_keys()) {
-                if (team.contains(Config.TEAM_NUMBER)) filteredMatches.add(match);
+                if (team.contains(ConfigService.teamNum)) filteredMatches.add(match);
             }
             for (String team : match.getAlliances().blue().team_keys()) {
-                if (team.contains(Config.TEAM_NUMBER)) filteredMatches.add(match);
+                if (team.contains(ConfigService.teamNum)) filteredMatches.add(match);
             }
         }
 

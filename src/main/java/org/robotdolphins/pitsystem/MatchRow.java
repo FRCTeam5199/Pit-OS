@@ -40,14 +40,14 @@ public class MatchRow implements Comparable<MatchRow> {
         if (alliance.equals("red")) {
             for (StyledText text : list) {
                 text.setColor(winner.equals("red") ? "#ff0000":"#aa2222");
-                text.setFontWeight(text.getText().equals(Config.TEAM_NUMBER) ? "bold":"normal");
+                text.setFontWeight(text.getText().equals(ConfigService.teamNum) ? "bold":"normal");
                 formattedAlliance.add(text);
             }
         }
         if (alliance.equals("blue")) {
             for (StyledText text : list) {
                 text.setColor(winner.equals("blue") ? "#0000ff":"#2222aa");
-                text.setFontWeight(text.getText().equals(Config.TEAM_NUMBER) ? "bold":"normal");
+                text.setFontWeight(text.getText().equals(ConfigService.teamNum) ? "bold":"normal");
                 formattedAlliance.add(text);
             }
         }
@@ -179,15 +179,6 @@ public class MatchRow implements Comparable<MatchRow> {
         public Builder competitionLevel(MatchType compLevel) {
             this.competitionLevel = compLevel;
             return this;
-        }
-
-        private String formatCompLevel(String compLevel) {
-            return switch (compLevel) {
-                case "f" -> "F";
-                case "sf" -> "S";
-                case "qm" -> "Q";
-                default -> "Unknown";
-            };
         }
     }
 
