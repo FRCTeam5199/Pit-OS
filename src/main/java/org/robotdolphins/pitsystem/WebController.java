@@ -22,7 +22,7 @@ public class WebController {
     private List<MatchRow> matchRows = new ArrayList<>();
     private boolean connected;
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 10000)
     public void refreshSchedule(){
         List<MatchRow> matchRowsTemp = new ArrayList<>(matchRows.stream().toList());
         boolean connected = false;

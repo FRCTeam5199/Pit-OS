@@ -41,16 +41,16 @@ td.winCol {
 background: #ffffff;
 }
 thead.bgCol{
-background: #003366
+background: #003366;
 }
 td.loseCol {
-background: #cccccc
+background: #cccccc;
 }
 h1.centered {
 display: inline-block;
 position:absolute;
 left:50vw;
-transform: translate(-50%,0%)
+transform: translate(-50%,0%);
 }
 div.heading-block{
 width: 100vw;

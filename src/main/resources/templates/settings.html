@@ -18,5 +18,23 @@
     <h1 style="color: #ffffff;" class="centered"> Settings
     </h1>
 </div>
+<form class="flex-nowrap text-light" action="settings" method="post" accept-charset="UTF-8" autocomplete="off"
+      enctype="application/x-www-form-urlencoded">
+    <div class="input-group">
+        <label>The Blue Alliance API url:
+            <input class="form-control" type="text">
+        </label>
+    </div>
+    <div class="input-group">
+        <label>Event Code:
+            <input class="form-control" type="text">
+        </label>
+    </div>
+    <br>
+    <div class="input-group">
+        <button class="btn btn-secondary" type="reset">Revert Settings</button>
+        <button class="btn btn-primary" type="submit">Update Settings</button>
+    </div>
+</form>
 </body>
 </html>
