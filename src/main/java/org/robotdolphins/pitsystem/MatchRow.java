@@ -39,7 +39,7 @@ public class MatchRow implements Comparable<MatchRow> {
 
         if (alliance.equals("red")) {
             for (StyledText text : list) {
-                text.setColor(winner.equals("red") ? "#ff0000":"#aa2222");
+                text.setColor(winner.equals("red") ? "#FFA500":"#de8004");
                 text.setFontWeight(text.getText().equals(ConfigService.teamNum) ? "bold":"normal");
                 formattedAlliance.add(text);
             }

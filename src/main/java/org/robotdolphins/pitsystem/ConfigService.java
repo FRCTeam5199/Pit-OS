@@ -21,10 +21,10 @@ public class ConfigService {
                             //Table colors
                             new Color(0xFFFFFF),
                             new Color(0xCCCCCC),
-                            new Color(0xFF0000),
-                            new Color(0xCF0000),
-                            new Color(0x0032FF),
-                            new Color(0x0000DF),
+                            new Color(0xFC6B03),
+                            new Color(0xCC4F02),
+                            new Color(0x9900FF),
+                            new Color(0x8006D1),
                             //Text colors
                             new Color(0xFFFFFF),
                             new Color(0xFFFFFF),
@@ -36,7 +36,7 @@ public class ConfigService {
                     ),
                     "5199-fonts/Eurostile-Extended-2-Regular.otf",
                     "5199-fonts/Eurostile-Extended-2-Bold.otf",
-                    14
+                    15
             ));
     public static final String
             BASE_URL = "https://www.thebluealliance.com/api/v3/event/";
