@@ -64,7 +64,7 @@ public class WebController {
 
     @PostMapping("/settings")
     public String checkSettings(@ModelAttribute Config configuration, Model model) {
-        ConfigService.configuration = new Config(configuration.baseUrl(), configuration.eventCode(), configuration.token(), configuration.teamNumber(), ConfigService.configuration.formatting());
+        ConfigService.configuration = new Config(configuration.baseUrl(), configuration.matchLocation(), configuration.eventCode(), configuration.token(), configuration.teamNumber(), ConfigService.configuration.formatting());
         model.addAttribute("configuration", ConfigService.configuration);
         model.addAttribute("goToSchedule", true);
         refreshSchedule();

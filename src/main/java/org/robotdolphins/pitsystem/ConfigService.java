@@ -11,6 +11,7 @@ import java.io.IOException;
 public class ConfigService {
     private static final Config defaultConfiguration = new Config(
             "https://www.thebluealliance.com/api/v3/",
+            "event/%s/matches",
             "2025caav",
             getToken(),
             5199,

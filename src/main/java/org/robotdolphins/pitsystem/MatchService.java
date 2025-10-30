@@ -21,11 +21,10 @@ public class MatchService {
                 .baseUrl(ConfigService.configuration.baseUrl())
                 .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())
                 .build();
-        // TODO: find a good place to put "/matches"
-        final String URL_PATH = "event/" + ConfigService.configuration.eventCode() + "/matches";
+        final String MATCH_LOCATION = String.format("event/%s/matches",ConfigService.configuration.eventCode());
         try {
             return matchesRestClient.get()
-                    .uri(new URI(URL_PATH))
+                    .uri(new URI(MATCH_LOCATION))
                     .retrieve()
                     .body(new ParameterizedTypeReference<>() {
                     });

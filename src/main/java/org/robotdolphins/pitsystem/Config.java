@@ -5,6 +5,7 @@ import java.awt.Color;
 
 public record Config(
         String baseUrl,
+        String matchLocation,
         String eventCode,
         String token,
         int teamNumber,
