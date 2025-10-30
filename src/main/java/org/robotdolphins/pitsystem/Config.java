@@ -6,7 +6,7 @@ import java.awt.Color;
 public record Config(
         String baseUrl,
         String eventCode,
-        String Token,
+        String token,
         int teamNumber,
         PageFormat formatting
 ) {
@@ -15,7 +15,7 @@ public record Config(
             String normalFontLocation,
             String boldFontLocation,
             int fontSize
-    ){
+    ) {
         public record Colors(
                 Color bg,
                 Color tableWin,
@@ -31,6 +31,7 @@ public record Config(
                 Color textRedLose,
                 Color textBlueWin,
                 Color textBlueLose
-        ){}
+        ) {
+        }
     }
 }

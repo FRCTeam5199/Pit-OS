@@ -3,6 +3,7 @@
 <head>
     <title>Settings</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta th:if="${goToSchedule}" http-equiv="refresh" content="0;url=schedule">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
@@ -13,26 +14,39 @@
 <body>
 <div class="heading-block">
     <div style="display: inline-block; width: 48px; height: 48px;">
-        <img src="favicon.ico" style="width: 48px;" alt="5199 logo">
+        <a href="schedule">
+            <img src="favicon.ico" style="width: 48px;" alt="5199 logo">
+        </a>
     </div>
     <h1 style="color: #ffffff;" class="centered"> Settings
     </h1>
 </div>
-<form class="flex-nowrap text-light" action="settings" method="post" accept-charset="UTF-8" autocomplete="off"
-      enctype="application/x-www-form-urlencoded">
+<form class="flex-nowrap text-light" th:action="@{/settings}" th:object="${configuration}" method="post">
     <div class="input-group">
         <label>The Blue Alliance API url:
-            <input class="form-control" type="text">
+            <input class="form-control" readonly required type="url" th:field="*{baseUrl}">
         </label>
     </div>
     <div class="input-group">
         <label>Event Code:
-            <input class="form-control" type="text">
+            <input class="form-control" required type="text" th:field="*{eventCode}">
+        </label>
+    </div>
+    <div class="input-group">
+        <label>Token:
+            <input class="form-control" readonly required type="text" th:field="*{token}">
+        </label>
+    </div>
+    <div class="input-group">
+        <label>Team Number:
+            <input class="form-control" required type="number" th:field="*{teamNumber}">
         </label>
     </div>
     <br>
     <div class="input-group">
-        <button class="btn btn-secondary" type="reset">Revert Settings</button>
+        <a href="schedule">
+            <button class="btn btn-secondary" type="button">Cancel</button>
+        </a>
         <button class="btn btn-primary" type="submit">Update Settings</button>
     </div>
 </form>

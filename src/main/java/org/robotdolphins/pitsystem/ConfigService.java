@@ -9,8 +9,8 @@ import java.io.IOException;
 
 @Service
 public class ConfigService {
-    public static final Config defaultConfig = new Config(
-            "https://www.thebluealliance.com/api/v3/event/",
+    private static final Config defaultConfiguration = new Config(
+            "https://www.thebluealliance.com/api/v3/",
             "2025caav",
             getToken(),
             5199,
@@ -38,12 +38,12 @@ public class ConfigService {
                     "5199-fonts/Eurostile-Extended-2-Bold.otf",
                     14
             ));
-    public static final String
-            BASE_URL = "https://www.thebluealliance.com/api/v3/event/";
-    public static String
-            eventCode = "2025caav",
-            token = getToken(),
-            teamNum = "5199";
+    public static Config configuration = defaultConfiguration;
+
+    public static void resetConfiguration() {
+        configuration = defaultConfiguration;
+    }
+
     private static String getToken() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("./assets/AuthKey"));

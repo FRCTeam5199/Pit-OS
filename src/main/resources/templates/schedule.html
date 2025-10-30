@@ -13,10 +13,12 @@
 <body>
 <div class="heading-block">
     <div style="display: inline-block; width: 48px; height: 48px;">
-        <img src="favicon.ico" style="width: 48px;" alt="5199 logo">
+        <a href="schedule">
+          <img src="favicon.ico" style="width: 48px;" alt="5199 logo">
+        </a>
     </div>
     <h1 style="color: #ffffff;"
-        class="centered" th:text="|${config.teamNumber} Match Schedule|">
+        class="centered" th:text="|${configuration.teamNumber} Match Schedule|">
     </h1>
 </div>
 <table class="table table-custom text-center">

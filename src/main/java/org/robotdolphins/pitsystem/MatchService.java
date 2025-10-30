@@ -15,19 +15,20 @@ import java.util.List;
 
 
 @Service
-public class MatchServices {
-    public List<Match> getMatches(){
+public class MatchService {
+    public List<Match> getMatches() {
         RestClient matchesRestClient = RestClient.builder()
-                .baseUrl(ConfigService.BASE_URL)
-                .defaultHeader("X-TBA-Auth-Key", ConfigService.token)
+                .baseUrl(ConfigService.configuration.baseUrl())
+                .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())
                 .build();
         // TODO: find a good place to put "/matches"
-        final String URL_PATH = ConfigService.eventCode + "/matches";
+        final String URL_PATH = "event/" + ConfigService.configuration.eventCode() + "/matches";
         try {
             return matchesRestClient.get()
                     .uri(new URI(URL_PATH))
                     .retrieve()
-                    .body(new ParameterizedTypeReference<List<Match>>(){});
+                    .body(new ParameterizedTypeReference<>() {
+                    });
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         }
@@ -38,10 +39,10 @@ public class MatchServices {
 
         for (Match match : allMatches) {
             for (String team : match.getAlliances().red().team_keys()) {
-                if (team.contains(ConfigService.teamNum)) filteredMatches.add(match);
+                if (team.contains(String.valueOf(ConfigService.configuration.teamNumber()))) filteredMatches.add(match);
             }
             for (String team : match.getAlliances().blue().team_keys()) {
-                if (team.contains(ConfigService.teamNum)) filteredMatches.add(match);
+                if (team.contains(String.valueOf(ConfigService.configuration.teamNumber()))) filteredMatches.add(match);
             }
         }
 
@@ -78,5 +79,4 @@ public class MatchServices {
         Collections.sort(matchRows);
         return matchRows;
     }
-
 }

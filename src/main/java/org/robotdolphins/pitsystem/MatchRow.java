@@ -39,15 +39,15 @@ public class MatchRow implements Comparable<MatchRow> {
 
         if (alliance.equals("red")) {
             for (StyledText text : list) {
-                text.setColor(winner.equals("red") ? "#ff0000":"#aa2222");
-                text.setFontWeight(text.getText().equals(ConfigService.teamNum) ? "bold":"normal");
+                text.setColor(winner.equals("red") ? "#ff0000" : "#aa2222");
+                text.setFontWeight(text.getText().equals(String.valueOf(ConfigService.configuration.teamNumber())) ? "bold" : "normal");
                 formattedAlliance.add(text);
             }
         }
         if (alliance.equals("blue")) {
             for (StyledText text : list) {
-                text.setColor(winner.equals("blue") ? "#0000ff":"#2222aa");
-                text.setFontWeight(text.getText().equals(ConfigService.teamNum) ? "bold":"normal");
+                text.setColor(winner.equals("blue") ? "#0000ff" : "#2222aa");
+                text.setFontWeight(text.getText().equals(String.valueOf(ConfigService.configuration.teamNumber())) ? "bold" : "normal");
                 formattedAlliance.add(text);
             }
         }
@@ -113,7 +113,8 @@ public class MatchRow implements Comparable<MatchRow> {
             if (other.competitionLevel.equals(MatchType.QUALIFICATION))
                 return this.number - other.number;
             return -1;
-        } if (this.competitionLevel.equals(MatchType.FINALS)) {
+        }
+        if (this.competitionLevel.equals(MatchType.FINALS)) {
             if (other.competitionLevel.equals(MatchType.FINALS))
                 return this.number - other.number;
             return 1;
