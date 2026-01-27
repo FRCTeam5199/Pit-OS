@@ -14,7 +14,7 @@ import org.robotdolphins.pitsystem.event.Event;
 
 @Service
 public class EventInformationService {
-    public Event getEvent(){
+    public static Event getEvent(){
         RestClient eventRestClient = RestClient.builder()
                 .baseUrl(ConfigService.configuration.baseUrl())
                 .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())

@@ -1,5 +1,7 @@
 package org.robotdolphins.pitsystem;
 
+import org.robotdolphins.pitsystem.event.Webcast;
+import org.robotdolphins.pitsystem.event.WebcastTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ public class WebController {
     private List<MatchRow> matchRows = new ArrayList<>();
     private boolean connected;
     private static final Logger log = LoggerFactory.getLogger(WebController.class);
+    private Webcast webcast = new Webcast(WebcastTypes.direct_link,"");
 
     @Scheduled(fixedDelay = 10000)
     public void refreshSchedule() {
@@ -38,6 +41,7 @@ public class WebController {
             matchRowsTemp.addAll(matchService.getMatchRowsForUI());
             connected = true;
         } catch (RestClientException e) {
+            log.error("Failed to connect to TBA to get match schedules.");
             matchRowsTemp.addAll(oldMatchRows);
             if (matchRowsTemp.isEmpty()) {
                 throw e;
@@ -47,11 +51,27 @@ public class WebController {
         this.connected = connected;
     }
 
+    @Scheduled(fixedDelay = 60000, initialDelay = 100)
+    public void refreshWebcastSource() {
+        Webcast tempwebcast = webcast;
+        try {
+            webcast = WebcastService.getMainWebcast();
+            this.connected = true;
+        } catch (RestClientException e) {
+            log.error("Failed to connect to TBA to refresh Webcast source.");
+            webcast = tempwebcast;
+            this.connected = false;
+        }
+    }
+
     @GetMapping("/schedule")
     public String getSchedule(Model model) throws IOException {
+        log.info("Rendering Schedule");
         model.addAttribute("MatchRows", matchRows);
         model.addAttribute("connected", connected);
         model.addAttribute("configuration", ConfigService.configuration);
+        //TODO: We only support youtube and twitch for now. Additional HTML code needs to be added to support all stream types.
+        model.addAttribute("webcast", webcast);
         return "schedule";
     }
 
