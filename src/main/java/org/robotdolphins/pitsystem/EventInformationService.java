@@ -19,7 +19,7 @@ public class EventInformationService {
                 .baseUrl(ConfigService.configuration.baseUrl())
                 .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())
                 .build();
-        // TODO: find a good place to put "/matches"
+        // TODO: find a good place to put "event/"
         final String URL_PATH = "event/" + ConfigService.configuration.eventCode();
         try {
             return eventRestClient.get()
