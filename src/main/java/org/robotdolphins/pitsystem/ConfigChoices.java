@@ -1,6 +1,6 @@
 package org.robotdolphins.pitsystem;
 
-import org.robotdolphins.pitsystem.event.EventData;
+import org.robotdolphins.pitsystem.event.Event;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -25,11 +25,11 @@ public class ConfigChoices {
 
     public String[] getEventKeys() {
         String eventListLocation = String.format("/team/%s/events", ConfigService.configuration.teamNumber());
-        EventData[] eventData = Objects.requireNonNull(configInfoClient.get()
+        Event[] eventData = Objects.requireNonNull(configInfoClient.get()
                 .uri(eventListLocation)
                 .accept(MediaType.APPLICATION_JSON)
                 .retrieve()
-                .body(new ParameterizedTypeReference<EventData[]>() {
+                .body(new ParameterizedTypeReference<Event[]>() {
                 }));
         String[] eventKeys = new String[eventData.length];
         for (int i = 0; i < eventData.length; i++) {

@@ -82,6 +82,23 @@
     </tr>
     </tbody>
 </table>
+<iframe
+        width="500"
+        height="300"
+        th:if="${webcast.type.name() == 'youtube'}"
+        th:src="|https://www.youtube.com/embed/${webcast.channel}?autoplay=1|"
+        title="YouTube video player"
+        frameborder="0"
+        allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin">
+</iframe>
+<iframe
+        th:if="${webcast.type.name() == 'twitch'}"
+        th:src="|https://player.twitch.tv/?channel=${webcast.channel}&parent=localhost|"
+        height="300"
+        width="500"
+        allowfullscreen>
+</iframe>
 </body>
 <footer>
     <span th:style="'font-weight: bold; color:#ff4444; display:' + (${connected}? 'none' : 'inline')">NO INTERNET CONNECTION!</span>
