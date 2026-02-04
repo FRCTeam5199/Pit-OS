@@ -21,10 +21,12 @@ src: url('5199-fonts/Eurostile-Extended-2-Bold.otf') format('opentype');
 font-weight: bold;
 }
 
+
+
 body{
   background-color: #003366;
   font-family: eurostile;
-  font-size: 19px;
+  font-size: 20px;
 }
 
 .table-custom {
@@ -36,32 +38,39 @@ td.redColWin {
 background: #FF0000 !important;
 color: white;
 font-family: teams;
+font-size: 24px;
 }
 td.redColLose {
 background: #cf0000 !important;
 color: #dddddd;
 font-family: teams;
+font-size: 24px;
 }
 
 td.blueColWin {
 background: #0032ff !important;
 color: white;
 font-family: teams;
+font-size: 24px;
 }
 td.blueColLose {
 background: #0000df !important;
 color: #dddddd;
 font-family: teams;
+font-size: 24px;
 }
 
 td.winCol {
 background: #ffffff;
+font-family: teams;
 }
 thead.bgCol{
 background: #003366;
+font-family: teams;
 }
 td.loseCol {
 background: #cccccc;
+font-family: teams;
 }
 h1.centered {
 display: inline-block;
@@ -74,4 +83,5 @@ div.heading-block{
 width: 100vw;
 height: 48px;
 display:block;
+font-family: eurostile;
 }
