@@ -1,18 +1,30 @@
 @font-face {
-font-family: inter;
-src: url('5199-fonts/InterDisplay-LightItalic.otf') format('opentype');
+font-family: teams;
+src: url('5199-fonts/RobotWonders-6Rxd6.otf') format('opentype');
 font-weight: normal;
 }
 @font-face {
-font-family: inter;
-src: url('5199-fonts/Inter-Blacktalic.otf') format('opentype');
+font-family: teams;
+src: url('5199-fonts/Eurostile-Extended-2-Bold.otf') format('opentype');
+font-weight: bold;
+}
+
+@font-face {
+  font-family: eurostile;
+  src: url('5199-fonts/Eurostile-Extended-2-Regular.otf') format('opentype');
+  font-weight: normal;
+}
+
+@font-face {
+font-family: eurostile;
+src: url('5199-fonts/Eurostile-Extended-2-Bold.otf') format('opentype');
 font-weight: bold;
 }
 
 body{
   background-color: #003366;
   font-family: eurostile;
-  font-size: 25px;
+  font-size: 19px;
 }
 
 .table-custom {
@@ -23,19 +35,23 @@ body{
 td.redColWin {
 background: #FF0000 !important;
 color: white;
+font-family: teams;
 }
 td.redColLose {
 background: #cf0000 !important;
 color: #dddddd;
+font-family: teams;
 }
 
 td.blueColWin {
 background: #0032ff !important;
 color: white;
+font-family: teams;
 }
 td.blueColLose {
 background: #0000df !important;
 color: #dddddd;
+font-family: teams;
 }
 
 td.winCol {
@@ -52,6 +68,7 @@ display: inline-block;
 position:absolute;
 left:50vw;
 transform: translate(-50%,0%);
+font-family: eurostile;
 }
 div.heading-block{
 width: 100vw;
