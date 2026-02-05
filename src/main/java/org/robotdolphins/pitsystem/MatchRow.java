@@ -25,12 +25,12 @@ public class MatchRow implements Comparable<MatchRow> {
         this.time = time;
         this.winner = winner;
         this.redAlliance = formatAlliance(redAlliance.stream()
-                .map((redTeam) -> new StyledText(redTeam, "normal", "#000000"))
+                .map((redTeam) -> new StyledText(redTeam, "normal", "#000000","19px"))
                 .collect(Collectors.toList()), "red");
         this.redScore = redScore;
         this.blueScore = blueScore;
         this.blueAlliance = formatAlliance(blueAlliance.stream()
-                .map((bluTeam) -> new StyledText(bluTeam, "normal", "#000000"))
+                .map((bluTeam) -> new StyledText(bluTeam, "normal", "#000000","21px"))
                 .collect(Collectors.toList()), "blue");
     }
 
@@ -41,6 +41,7 @@ public class MatchRow implements Comparable<MatchRow> {
             for (StyledText text : list) {
                 text.setColor(winner.equals("red") ? "#ff0000" : "#aa2222");
                 text.setFontWeight(text.getText().equals(String.valueOf(ConfigService.configuration.teamNumber())) ? "bold" : "normal");
+                text.setFontSize(text.getText().equals(String.valueOf(ConfigService.configuration.teamNumber())) ? "20px" : "23px");
                 formattedAlliance.add(text);
             }
         }
@@ -48,6 +49,7 @@ public class MatchRow implements Comparable<MatchRow> {
             for (StyledText text : list) {
                 text.setColor(winner.equals("blue") ? "#0000ff" : "#2222aa");
                 text.setFontWeight(text.getText().equals(String.valueOf(ConfigService.configuration.teamNumber())) ? "bold" : "normal");
+                text.setFontSize(text.getText().equals(String.valueOf(ConfigService.configuration.teamNumber())) ? "20px" : "23px");
                 formattedAlliance.add(text);
             }
         }

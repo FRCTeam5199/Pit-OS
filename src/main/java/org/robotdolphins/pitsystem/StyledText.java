@@ -1,12 +1,12 @@
 package org.robotdolphins.pitsystem;
 
 public class StyledText {
-    private String text, fontWeight, color;
-
-    public StyledText(String text, String fontWeight, String color) {
+    private String text, fontWeight, color, fontSize;
+    public StyledText(String text, String fontWeight, String color, String fontSize) {
         this.text = text;
         this.fontWeight = fontWeight;
         this.color = color;
+        this.fontSize = fontSize;
     }
 
     public String getText() {
@@ -31,5 +31,13 @@ public class StyledText {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public void setFontSize(String fontSize){
+        this.fontSize = fontSize;
+    }
+
+    public String getFontSize(){
+        return fontSize;
     }
 }

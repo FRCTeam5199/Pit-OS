@@ -39,14 +39,14 @@
         <span th:if="${match.winner == 'red'}">
         <td class="winCol">
           <span th:each="team:${match.redAlliance}">&nbsp
-            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
+            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color}; font-size: ${team.fontSize};|" th:text="${team.text}"></span>
           </span>
         </td>
       </span>
         <span th:unless="${match.winner == 'red'}">
         <td class="loseCol">
           <span th:each="team:${match.redAlliance}">&nbsp
-            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
+            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color}; font-size: ${team.fontSize};|" th:text="${team.text}"></span>
           </span>
         </td>
       </span>
@@ -68,14 +68,14 @@
         <span th:if="${match.winner == 'blue'}">
         <td class="winCol">
           <span th:each="team:${match.blueAlliance}">&nbsp
-            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
+            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color}; font-size: ${team.fontSize};|" th:text="${team.text}"></span>
           </span>
         </td>
       </span>
         <span th:unless="${match.winner == 'blue'}">
         <td class="loseCol">
           <span th:each="team:${match.blueAlliance}">&nbsp
-            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
+            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color}; font-size: ${team.fontSize};|" th:text="${team.text}"></span>
           </span>
         </td>
       </span>
