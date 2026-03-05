@@ -27,11 +27,20 @@
             <input class="form-control" readonly required type="url" th:field="*{baseUrl}">
         </label>
     </div>
-    <div class="input-group">
-        <label>Event Code:
-            <input class="form-control" required type="text" th:field="*{eventCode}">
-        </label>
+    <div class="input-group mb-3">
+        <label class="input-group-text">Event Code:</label>
+        <select class="form-select" required type="text" th:field="*{eventCode}">
+            <option value ="2025caav" selected>2025caav</option>
+            <option value="2025caoc">2025caoc</option>
+            <option value="2025azgl">2025azgl</option>
+            <option value="2025joh">2025joh</option>
+        </select>
     </div>
+<!--    <div class="input-group">-->
+<!--        <label>Event Code:-->
+<!--            <input class="form-control" required type="text" th:field="*{eventCode}">-->
+<!--        </label>-->
+<!--    </div>-->
     <div class="input-group">
         <label>Token:
             <input class="form-control" readonly required type="text" th:field="*{token}">

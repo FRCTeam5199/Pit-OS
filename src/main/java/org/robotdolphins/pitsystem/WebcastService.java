@@ -14,9 +14,9 @@ import java.util.List;
 @Service
 public class WebcastService {
     private static final Logger log = LoggerFactory.getLogger(WebcastService.class);
-    public static ArrayList<Webcast> getWebcasts(){
+    public static List<Webcast> getWebcasts(){
         Event currentEvent = EventInformationService.getEvent();
-        ArrayList<Webcast> webcasts = currentEvent.webcasts();
+        List<Webcast> webcasts = currentEvent.webcasts();
         Collections.sort(webcasts);
         return webcasts;
     }
@@ -25,7 +25,7 @@ public class WebcastService {
         log.info("Main webcast's channel is {}", getWebcasts().getFirst().channel());
         return getWebcasts().getFirst();
     }
-    public static ArrayList<String> getChannels(ArrayList<Webcast> webcasts) {
+    public static List<String> getChannels(ArrayList<Webcast> webcasts) {
         ArrayList<String> channels = new ArrayList<>();
         for (Webcast cast : webcasts) {
             channels.add(cast.channel());
