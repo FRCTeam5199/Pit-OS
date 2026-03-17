@@ -28,10 +28,11 @@
         </label>
     </div>
     <div class="input-group mb-3">
-        <label class="input-group-text">Event:</label>
-        <select class="form-select" required type="text" th:field="*{eventCode}">
-            <option th:each="event : ${events}" th:text= "${event.longName}" th:value ="${event.key}" selected>If you see this, something has gone very wrong.</option>
-        </select>
+        <label class="input-group">Event:
+            <select class="form-select" type="text" th:field="*{eventCode}">
+                <option th:each="event : ${events}" th:text= "${event.longName}" th:value ="${event.key}" selected>If you see this, something has gone very wrong.</option>
+            </select>
+        </label>
     </div>
     <div class="input-group" style="display:none;">
         <label>Token:

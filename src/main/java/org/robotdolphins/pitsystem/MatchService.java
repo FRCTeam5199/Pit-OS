@@ -1,8 +1,11 @@
 package org.robotdolphins.pitsystem;
 
 import org.robotdolphins.pitsystem.event.matches.Match;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
@@ -16,6 +19,7 @@ import java.util.List;
 
 @Service
 public class MatchService {
+    private static final Logger log = LoggerFactory.getLogger(MatchService.class);
     public List<Match> getMatches() {
         RestClient matchesRestClient = RestClient.builder()
                 .baseUrl(ConfigService.configuration.baseUrl())
@@ -31,6 +35,9 @@ public class MatchService {
                     });
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
+        } catch (HttpClientErrorException e) {
+            log.error("Failed to get the match list: {}", String.valueOf(e));
+            return new ArrayList<>();
         }
     }
 

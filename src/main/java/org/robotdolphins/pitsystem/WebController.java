@@ -83,7 +83,7 @@ public class WebController {
     public String getSettings(Model model) {
         model.addAttribute("configuration", ConfigService.configuration);
         model.addAttribute("goToSchedule", false);
-        model.addAttribute("events", TeamInformationService.getTeamEvents().reversed());
+        model.addAttribute("events", TeamInformationService.getTeamEvents());
         return "settings";
     }
 
