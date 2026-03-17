@@ -1,4 +1,4 @@
-package org.robotdolphins.pitsystem.WebServices;
+package org.robotdolphins.pitsystem.ApiServices;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -9,7 +9,7 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import org.robotdolphins.pitsystem.DataClasses.Event.Event;
+import org.robotdolphins.pitsystem.Data.Event;
 
 @Service
 public class EventInformationService {

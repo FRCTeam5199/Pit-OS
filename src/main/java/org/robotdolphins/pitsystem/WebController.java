@@ -2,10 +2,11 @@ package org.robotdolphins.pitsystem;
 
 import org.robotdolphins.pitsystem.Configuration.Config;
 import org.robotdolphins.pitsystem.Configuration.ConfigService;
-import org.robotdolphins.pitsystem.DataClasses.Event.Webcast;
-import org.robotdolphins.pitsystem.DataClasses.Event.WebcastTypes;
-import org.robotdolphins.pitsystem.WebServices.MatchService;
-import org.robotdolphins.pitsystem.WebServices.WebcastService;
+import org.robotdolphins.pitsystem.Data.EventInfo.Webcast;
+import org.robotdolphins.pitsystem.Data.EventInfo.WebcastTypes;
+import org.robotdolphins.pitsystem.ApiServices.MatchService;
+import org.robotdolphins.pitsystem.ApiServices.WebcastService;
+import org.robotdolphins.pitsystem.Data.MatchRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

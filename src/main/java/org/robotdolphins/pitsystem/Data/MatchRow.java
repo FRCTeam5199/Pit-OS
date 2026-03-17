@@ -1,7 +1,6 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.Data;
 
 import org.robotdolphins.pitsystem.Configuration.ConfigService;
-import org.robotdolphins.pitsystem.DataClasses.StyledText;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 

@@ -1,4 +1,4 @@
-package org.robotdolphins.pitsystem.DataClasses.Event;
+package org.robotdolphins.pitsystem.Data.EventInfo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

@@ -1,7 +1,7 @@
-package org.robotdolphins.pitsystem.WebServices;
+package org.robotdolphins.pitsystem.ApiServices;
 
-import org.robotdolphins.pitsystem.DataClasses.Event.Event;
-import org.robotdolphins.pitsystem.DataClasses.Event.Webcast;
+import org.robotdolphins.pitsystem.Data.Event;
+import org.robotdolphins.pitsystem.Data.EventInfo.Webcast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
