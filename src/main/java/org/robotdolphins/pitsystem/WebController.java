@@ -16,7 +16,6 @@ import org.springframework.web.client.RestClientException;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @EnableScheduling
@@ -60,7 +59,7 @@ public class WebController {
             webcast = WebcastService.getMainWebcast();
             this.connected = true;
         } catch (RestClientException e) {
-            log.error(Arrays.toString(e.getStackTrace()));
+            log.error(e.toString());
             log.error("Failed to connect to TBA to refresh Webcast source.");
             webcast = tempwebcast;
             this.connected = false;
