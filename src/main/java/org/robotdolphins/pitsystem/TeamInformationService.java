@@ -11,15 +11,16 @@ import java.util.List;
 
 @Service
 public class TeamInformationService {
-    private static final String eventLocation = "/team/%s/events";
+    private static final String eventLocation = "team/%s/events";
     public static List<Event> getTeamEvents() {
         RestClient teamRestClient = RestClient.builder()
                 .baseUrl(ConfigService.configuration.baseUrl())
                 .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())
                 .build();
         try {
+            System.out.println(String.format(eventLocation,"frc" + String.valueOf(ConfigService.configuration.teamNumber())));
             return teamRestClient.get()
-                    .uri(new URI(String.format(eventLocation,ConfigService.configuration.teamNumber())))
+                    .uri(new URI(String.format(eventLocation,"frc" + String.valueOf(ConfigService.configuration.teamNumber()))))
                     .retrieve()
                     .body(new ParameterizedTypeReference<>() {
                     });
