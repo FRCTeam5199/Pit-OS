@@ -16,9 +16,9 @@ import java.util.List;
 
 @Service
 public class TeamInformationService {
-    private static final Logger log = LoggerFactory.getLogger(TeamInformationService.class);
-    private static final String eventLocation = "team/%s/events";
-    public static List<Event> getTeamEvents() {
+    private final Logger log = LoggerFactory.getLogger(TeamInformationService.class);
+    private final String eventLocation = "team/%s/events";
+    public List<Event> getTeamEvents() {
         RestClient teamRestClient = RestClient.builder()
                 .baseUrl(ConfigService.configuration.baseUrl())
                 .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())

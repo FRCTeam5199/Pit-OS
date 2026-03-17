@@ -24,6 +24,8 @@ public class WebController {
 
     @Autowired
     private MatchService matchService;
+    @Autowired
+    private TeamInformationService teamInformationService;
 
     private List<MatchRow> matchRows = new ArrayList<>();
     private boolean connected;
@@ -82,7 +84,7 @@ public class WebController {
     public String getSettings(Model model) {
         model.addAttribute("configuration", ConfigService.configuration);
         model.addAttribute("goToSchedule", false);
-        model.addAttribute("events", TeamInformationService.getTeamEvents());
+        model.addAttribute("events", teamInformationService.getTeamEvents());
         return "settings";
     }
 
