@@ -2,7 +2,7 @@ package org.robotdolphins.pitsystem.ApiServices;
 
 import org.robotdolphins.pitsystem.Configuration.ConfigService;
 import org.robotdolphins.pitsystem.Data.MatchRow;
-import org.robotdolphins.pitsystem.Data.EventInfo.matches.Match;
+import org.robotdolphins.pitsystem.Data.EventInfo.Match;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
