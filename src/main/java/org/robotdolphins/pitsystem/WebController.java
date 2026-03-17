@@ -24,6 +24,10 @@ public class WebController {
 
     @Autowired
     private MatchService matchService;
+    @Autowired
+    private WebcastService webcastService;
+    @Autowired
+    private ConfigService configService;
 
     private List<MatchRow> matchRows = new ArrayList<>();
     private boolean connected;
@@ -55,7 +59,7 @@ public class WebController {
     public void refreshWebcastSource() {
         Webcast tempwebcast = webcast;
         try {
-            webcast = WebcastService.getMainWebcast();
+            webcast = webcastService.getMainWebcast();
             this.connected = true;
         } catch (RestClientException e) {
             log.error("Failed to connect to TBA to refresh Webcast source.");
@@ -69,7 +73,7 @@ public class WebController {
         log.info("Rendering Schedule");
         model.addAttribute("MatchRows", matchRows);
         model.addAttribute("connected", connected);
-        model.addAttribute("configuration", ConfigService.configuration);
+        model.addAttribute("configuration", configService.getConfiguration());
         //TODO: We only support youtube and twitch for now. Additional HTML code needs to be added to support all stream types.
         model.addAttribute("webcast", webcast);
         return "schedule";
@@ -77,15 +81,15 @@ public class WebController {
 
     @GetMapping("/settings")
     public String getSettings(Model model) {
-        model.addAttribute("configuration", ConfigService.configuration);
+        model.addAttribute("configuration", configService.getConfiguration());
         model.addAttribute("goToSchedule", false);
         return "settings";
     }
 
     @PostMapping("/settings")
     public String checkSettings(@ModelAttribute Config configuration, Model model) {
-        ConfigService.configuration = new Config(configuration.baseUrl(), ConfigService.configuration.matchLocation(), configuration.eventCode(), configuration.token(), configuration.teamNumber(), ConfigService.configuration.formatting());
-        model.addAttribute("configuration", ConfigService.configuration);
+        configService.setConfiguration(new Config(configuration.baseUrl(), configService.getConfiguration().matchLocation(), configuration.eventCode(), configuration.token(), configuration.teamNumber(), configService.getConfiguration().formatting()));
+        model.addAttribute("configuration", configService.getConfiguration());
         model.addAttribute("goToSchedule", true);
         refreshSchedule();
         return "settings";

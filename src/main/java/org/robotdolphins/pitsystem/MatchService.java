@@ -1,6 +1,7 @@
 package org.robotdolphins.pitsystem;
 
 import org.robotdolphins.pitsystem.event.matches.Match;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -16,12 +17,14 @@ import java.util.List;
 
 @Service
 public class MatchService {
+    @Autowired
+    private ConfigService configService;
     public List<Match> getMatches() {
         RestClient matchesRestClient = RestClient.builder()
-                .baseUrl(ConfigService.configuration.baseUrl())
-                .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())
+                .baseUrl(configService.getConfiguration().baseUrl())
+                .defaultHeader("X-TBA-Auth-Key", configService.getConfiguration().token())
                 .build();
-        final String MATCH_LOCATION = String.format(ConfigService.configuration.matchLocation(),ConfigService.configuration.eventCode());
+        final String MATCH_LOCATION = String.format(configService.getConfiguration().matchLocation(),configService.getConfiguration().eventCode());
         try {
             return matchesRestClient.get()
                     .uri(new URI(MATCH_LOCATION))
@@ -38,10 +41,10 @@ public class MatchService {
 
         for (Match match : allMatches) {
             for (String team : match.getAlliances().red().team_keys()) {
-                if (team.contains(String.valueOf(ConfigService.configuration.teamNumber()))) filteredMatches.add(match);
+                if (team.contains(String.valueOf(configService.getConfiguration().teamNumber()))) filteredMatches.add(match);
             }
             for (String team : match.getAlliances().blue().team_keys()) {
-                if (team.contains(String.valueOf(ConfigService.configuration.teamNumber()))) filteredMatches.add(match);
+                if (team.contains(String.valueOf(configService.getConfiguration().teamNumber()))) filteredMatches.add(match);
             }
         }
 
@@ -73,7 +76,7 @@ public class MatchService {
                     .redScore("" + match.getAlliances().red().score())
                     .blueScore("" + match.getAlliances().blue().score())
                     .blueAlliance(teamList(Arrays.asList(match.getAlliances().blue().team_keys())))
-                    .build());
+                    .build(configService));
         }
         Collections.sort(matchRows);
         return matchRows;

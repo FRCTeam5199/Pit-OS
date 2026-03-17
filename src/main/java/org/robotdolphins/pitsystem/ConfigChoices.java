@@ -1,6 +1,7 @@
 package org.robotdolphins.pitsystem;
 
 import org.robotdolphins.pitsystem.event.Event;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
@@ -11,20 +12,26 @@ import java.util.Objects;
 
 @Service
 public class ConfigChoices {
-    private RestClient configInfoClient = RestClient.builder()
-            .baseUrl(ConfigService.configuration.baseUrl())
-            .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())
-            .build();
+    @Autowired
+    private ConfigService configService;
 
+    private RestClient configInfoClient;
+    public ConfigChoices(ConfigService configService) {
+        RestClient.Builder builder = RestClient.builder();
+        builder.baseUrl(configService.getConfiguration().baseUrl());
+        builder.defaultHeader("X-TBA-Auth-Key", configService.getConfiguration().token());
+        configInfoClient = builder
+                .build();
+    }
     public void refreshClient() {
         configInfoClient = RestClient.builder()
-                .baseUrl(ConfigService.configuration.baseUrl())
-                .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())
+                .baseUrl(configService.getConfiguration().baseUrl())
+                .defaultHeader("X-TBA-Auth-Key", configService.getConfiguration().token())
                 .build();
     }
 
     public String[] getEventKeys() {
-        String eventListLocation = String.format("/team/%s/events", ConfigService.configuration.teamNumber());
+        String eventListLocation = String.format("/team/%s/events", configService.getConfiguration().teamNumber());
         Event[] eventData = Objects.requireNonNull(configInfoClient.get()
                 .uri(eventListLocation)
                 .accept(MediaType.APPLICATION_JSON)
