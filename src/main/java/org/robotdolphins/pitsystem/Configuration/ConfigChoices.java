@@ -1,6 +1,6 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.Configuration;
 
-import org.robotdolphins.pitsystem.event.Event;
+import org.robotdolphins.pitsystem.DataClasses.Event.Event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatusCode;

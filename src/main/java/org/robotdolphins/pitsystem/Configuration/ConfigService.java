@@ -1,8 +1,7 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.Configuration;
 
 import org.springframework.stereotype.Service;
 
-import java.awt.Color;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;

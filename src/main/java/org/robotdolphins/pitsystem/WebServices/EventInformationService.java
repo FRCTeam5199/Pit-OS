@@ -1,17 +1,15 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.WebServices;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
+import org.robotdolphins.pitsystem.Configuration.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 
-import com.fasterxml.jackson.databind.deser.DataFormatReaders.Match;
-import org.robotdolphins.pitsystem.event.Event;
+import org.robotdolphins.pitsystem.DataClasses.Event.Event;
 
 @Service
 public class EventInformationService {

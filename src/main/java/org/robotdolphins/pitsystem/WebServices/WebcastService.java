@@ -1,8 +1,7 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.WebServices;
 
-import org.robotdolphins.pitsystem.event.Event;
-import org.robotdolphins.pitsystem.event.Webcast;
-import org.robotdolphins.pitsystem.event.WebcastTypes;
+import org.robotdolphins.pitsystem.DataClasses.Event.Event;
+import org.robotdolphins.pitsystem.DataClasses.Event.Webcast;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 @Service
 public class WebcastService {

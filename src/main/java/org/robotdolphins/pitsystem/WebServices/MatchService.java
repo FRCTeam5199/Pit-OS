@@ -1,6 +1,8 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.WebServices;
 
-import org.robotdolphins.pitsystem.event.matches.Match;
+import org.robotdolphins.pitsystem.Configuration.ConfigService;
+import org.robotdolphins.pitsystem.MatchRow;
+import org.robotdolphins.pitsystem.DataClasses.Event.matches.Match;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;

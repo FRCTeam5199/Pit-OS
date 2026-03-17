@@ -1,8 +1,8 @@
-package org.robotdolphins.pitsystem.event.matches;
+package org.robotdolphins.pitsystem.DataClasses.Event.matches;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.robotdolphins.pitsystem.MatchType;
-import org.robotdolphins.pitsystem.event.matches.match.Alliances;
+import org.robotdolphins.pitsystem.DataClasses.Event.matches.match.Alliances;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Match {

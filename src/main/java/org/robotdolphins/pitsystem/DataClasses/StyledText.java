@@ -1,4 +1,4 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.DataClasses;
 
 public class StyledText {
     private String text, fontWeight, color;

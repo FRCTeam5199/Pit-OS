@@ -1,4 +1,4 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.Configuration;
 
 
 import java.awt.Color;
