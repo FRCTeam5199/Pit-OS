@@ -27,9 +27,9 @@
             <input class="form-control" readonly required type="url" th:field="*{baseUrl}">
         </label>
     </div>
-    <div class="input-group mb-3">
-        <label class="input-group">Event:
-            <select class="form-select" type="text" th:field="*{eventCode}">
+    <div class="input-group">
+        <label>Event:
+            <select class="form-select" th:field="*{eventCode}">
                 <option th:each="event : ${events}" th:text= "${event.longName}" th:value ="${event.key}" selected>If you see this, something has gone very wrong.</option>
             </select>
         </label>
