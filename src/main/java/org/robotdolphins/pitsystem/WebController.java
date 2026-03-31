@@ -97,6 +97,7 @@ public class WebController {
         model.addAttribute("configuration", configService.getConfiguration());
         model.addAttribute("goToSchedule", true);
         refreshSchedule();
+        refreshWebcastSource();
         return "settings";
     }
 
