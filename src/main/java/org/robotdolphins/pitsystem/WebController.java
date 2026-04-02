@@ -57,6 +57,7 @@ public class WebController {
         } catch (RestClientException e) {
             log.error(e.toString());
             log.error("Failed to connect to TBA to get match schedules.");
+            log.error(e.getMessage());
             matchRowsTemp.addAll(oldMatchRows);
             if (matchRowsTemp.isEmpty()) {
                 throw e;
