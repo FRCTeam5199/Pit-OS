@@ -22,17 +22,19 @@
     </h1>
 </div>
 <form class="flex-nowrap text-light" th:action="@{/settings}" th:object="${configuration}" method="post">
-    <div class="input-group">
+    <div class="input-group" style="display:none;">
         <label>The Blue Alliance API url:
             <input class="form-control" readonly required type="url" th:field="*{baseUrl}">
         </label>
     </div>
     <div class="input-group">
-        <label>Event Code:
-            <input class="form-control" required type="text" th:field="*{eventCode}">
+        <label>Event:
+            <select class="form-select" th:field="*{eventCode}">
+                <option th:each="event : ${events}" th:text= "${event.longName}" th:value ="${event.key}" selected>If you see this, something has gone very wrong.</option>
+            </select>
         </label>
     </div>
-    <div class="input-group">
+    <div class="input-group" style="display:none;">
         <label>Token:
             <input class="form-control" readonly required type="text" th:field="*{token}">
         </label>
