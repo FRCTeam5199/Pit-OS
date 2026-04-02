@@ -42,3 +42,11 @@ out/
 ### Auth Key ###
 assets/AuthKey
 assets/BotKey
+assets/AppKey
+
+# exclude contents of image folder
+/images/*
+
+# keeps some file in to prevent deletion of the folder itself
+!images/.gitkeep
+
