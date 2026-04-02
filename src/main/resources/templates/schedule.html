@@ -13,13 +13,14 @@
 <body>
 <div class="heading-block">
     <div style="display: inline-block; width: 48px; height: 48px;">
-        <a href="schedule">
+        <a href="/">
           <img src="favicon.ico" style="width: 48px;" alt="5199 logo">
         </a>
     </div>
     <h1 style="color: #ffffff;"
-        class="centered" th:text="|${configuration.teamNumber} Match Schedule|">
+        class="centered" th:text="|${configuration.teamNumber}'s ${eventName} Match Schedule|">
     </h1>
+    <a href="settings" class="btn btn-secondary btn-lg position-absolute top-0 end-0"><img src="settings.png" height="25" alt="settings logo"></a>
 </div>
 <table class="table table-custom text-center">
     <thead class="sticky-top bgCol">
@@ -102,6 +103,5 @@
 </body>
 <footer>
     <span th:style="'font-weight: bold; color:#ff4444; display:' + (${connected}? 'none' : 'inline')">NO INTERNET CONNECTION!</span>
-    <p style="color:#ffffff">The settings page can be found <a href="settings">here</a>!</p>
 </footer>
 </html>

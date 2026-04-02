@@ -1,5 +1,7 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.Data;
 
+import org.robotdolphins.pitsystem.Configuration.ConfigService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 
 import java.time.Instant;
@@ -19,35 +21,38 @@ public class MatchRow implements Comparable<MatchRow> {
     private final String blueScore;
     private final List<StyledText> blueAlliance;
 
-    public MatchRow(MatchType competitionLevel, int number, String time, String winner, List<String> redAlliance, String redScore, String blueScore, List<String> blueAlliance) {
+    @Autowired
+    private ConfigService configService;
+
+    public MatchRow(MatchType competitionLevel, int number, String time, String winner, List<String> redAlliance, String redScore, String blueScore, List<String> blueAlliance, ConfigService configService) {
         this.competitionLevel = competitionLevel;
         this.number = number;
         this.time = time;
         this.winner = winner;
         this.redAlliance = formatAlliance(redAlliance.stream()
                 .map((redTeam) -> new StyledText(redTeam, "normal", "#000000"))
-                .collect(Collectors.toList()), "red");
+                .collect(Collectors.toList()), "red", configService);
         this.redScore = redScore;
         this.blueScore = blueScore;
         this.blueAlliance = formatAlliance(blueAlliance.stream()
                 .map((bluTeam) -> new StyledText(bluTeam, "normal", "#000000"))
-                .collect(Collectors.toList()), "blue");
+                .collect(Collectors.toList()), "blue", configService);
     }
 
-    public List<StyledText> formatAlliance(List<StyledText> list, String alliance) {
+    public List<StyledText> formatAlliance(List<StyledText> list, String alliance, ConfigService configService) {
         ArrayList<StyledText> formattedAlliance = new ArrayList<>();
 
         if (alliance.equals("red")) {
             for (StyledText text : list) {
                 text.setColor(winner.equals("red") ? "#ff0000" : "#aa2222");
-                text.setFontWeight(text.getText().equals(String.valueOf(ConfigService.configuration.teamNumber())) ? "bold" : "normal");
+                text.setFontWeight(text.getText().equals(String.valueOf(configService.getConfiguration().teamNumber())) ? "bold" : "normal");
                 formattedAlliance.add(text);
             }
         }
         if (alliance.equals("blue")) {
             for (StyledText text : list) {
                 text.setColor(winner.equals("blue") ? "#0000ff" : "#2222aa");
-                text.setFontWeight(text.getText().equals(String.valueOf(ConfigService.configuration.teamNumber())) ? "bold" : "normal");
+                text.setFontWeight(text.getText().equals(String.valueOf(configService.getConfiguration().teamNumber())) ? "bold" : "normal");
                 formattedAlliance.add(text);
             }
         }
@@ -173,8 +178,8 @@ public class MatchRow implements Comparable<MatchRow> {
             return this;
         }
 
-        public MatchRow build() {
-            return new MatchRow(competitionLevel, number, time, winner, redAlliance, redScore, blueScore, blueAlliance);
+        public MatchRow build(ConfigService configService) {
+            return new MatchRow(competitionLevel, number, time, winner, redAlliance, redScore, blueScore, blueAlliance, configService);
         }
 
         public Builder competitionLevel(MatchType compLevel) {

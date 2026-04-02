@@ -1,8 +1,14 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.ApiServices;
 
-import org.robotdolphins.pitsystem.event.matches.Match;
+import org.robotdolphins.pitsystem.Configuration.ConfigService;
+import org.robotdolphins.pitsystem.Data.MatchRow;
+import org.robotdolphins.pitsystem.Data.EventInfo.Match;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
@@ -16,21 +22,27 @@ import java.util.List;
 
 @Service
 public class MatchService {
+    private static final Logger log = LoggerFactory.getLogger(MatchService.class);
+    @Autowired
+    private ConfigService configService;
     public List<Match> getMatches() {
         RestClient matchesRestClient = RestClient.builder()
-                .baseUrl(ConfigService.configuration.baseUrl())
-                .defaultHeader("X-TBA-Auth-Key", ConfigService.configuration.token())
+                .baseUrl(configService.getConfiguration().baseUrl())
+                .defaultHeader("X-TBA-Auth-Key", configService.getConfiguration().token())
                 .build();
-        // TODO: find a good place to put "/matches"
-        final String URL_PATH = "event/" + ConfigService.configuration.eventCode() + "/matches";
+        final String MATCH_LOCATION = String.format(configService.getConfiguration().matchLocation(),configService.getConfiguration().eventCode());
         try {
             return matchesRestClient.get()
-                    .uri(new URI(URL_PATH))
+                    .uri(new URI(MATCH_LOCATION))
                     .retrieve()
                     .body(new ParameterizedTypeReference<>() {
                     });
         } catch (URISyntaxException e) {
+            log.error(e.getMessage());
             throw new RuntimeException(e);
+        } catch (HttpClientErrorException e) {
+            log.error("Failed to get the match list: {}", String.valueOf(e));
+            return new ArrayList<>();
         }
     }
 
@@ -39,10 +51,10 @@ public class MatchService {
 
         for (Match match : allMatches) {
             for (String team : match.getAlliances().red().team_keys()) {
-                if (team.contains(String.valueOf(ConfigService.configuration.teamNumber()))) filteredMatches.add(match);
+                if (team.contains(String.valueOf(configService.getConfiguration().teamNumber()))) filteredMatches.add(match);
             }
             for (String team : match.getAlliances().blue().team_keys()) {
-                if (team.contains(String.valueOf(ConfigService.configuration.teamNumber()))) filteredMatches.add(match);
+                if (team.contains(String.valueOf(configService.getConfiguration().teamNumber()))) filteredMatches.add(match);
             }
         }
 
@@ -74,7 +86,7 @@ public class MatchService {
                     .redScore("" + match.getAlliances().red().score())
                     .blueScore("" + match.getAlliances().blue().score())
                     .blueAlliance(teamList(Arrays.asList(match.getAlliances().blue().team_keys())))
-                    .build());
+                    .build(configService));
         }
         Collections.sort(matchRows);
         return matchRows;

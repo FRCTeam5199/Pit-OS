@@ -1,4 +1,4 @@
-package org.robotdolphins.pitsystem;
+package org.robotdolphins.pitsystem.Data;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
