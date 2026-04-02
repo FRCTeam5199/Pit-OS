@@ -37,7 +37,7 @@ public class EventInformationService {
         } catch (URISyntaxException e) {
             throw new RuntimeException(e);
         } catch (HttpClientErrorException e) {
-            log.error("Failed to get the event list for team: {}", ConfigService.configuration.teamNumber());
+            log.error("Failed to get the event list for team: {}", configService.getConfiguration().teamNumber());
             return new Event(null, null, null, null, null, null);
         }
     }

@@ -4,6 +4,7 @@ import org.robotdolphins.pitsystem.Configuration.Config;
 import org.robotdolphins.pitsystem.Configuration.ConfigService;
 import org.robotdolphins.pitsystem.Data.EventInfo.Webcast;
 import org.robotdolphins.pitsystem.Data.EventInfo.WebcastTypes;
+import org.robotdolphins.pitsystem.ApiServices.EventInformationService;
 import org.robotdolphins.pitsystem.ApiServices.MatchService;
 import org.robotdolphins.pitsystem.ApiServices.WebcastService;
 import org.robotdolphins.pitsystem.Data.MatchRow;
@@ -26,6 +27,8 @@ import java.util.List;
 @EnableScheduling
 @Controller
 public class WebController {
+    @Autowired
+    private EventInformationService eventInformationService;
 
     @Autowired
     private MatchService matchService;
@@ -83,7 +86,7 @@ public class WebController {
         model.addAttribute("MatchRows", matchRows);
         model.addAttribute("connected", connected);
         model.addAttribute("configuration", configService.getConfiguration());
-        model.addAttribute("eventName", EventInformationService.getEvent().getShortName());
+        model.addAttribute("eventName", eventInformationService.getEvent().getShortName());
         //TODO: We only support youtube and twitch for now. Additional HTML code needs to be added to support all stream types.
         model.addAttribute("webcast", webcast);
         return "schedule";
