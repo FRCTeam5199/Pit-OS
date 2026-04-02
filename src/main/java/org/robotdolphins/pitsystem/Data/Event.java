@@ -1,6 +1,7 @@
-package org.robotdolphins.pitsystem.event;
+package org.robotdolphins.pitsystem.Data;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.robotdolphins.pitsystem.Data.EventInfo.Webcast;
 
 import java.time.LocalDate;
 import java.util.List;

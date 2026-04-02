@@ -1,7 +1,13 @@
 package org.robotdolphins.pitsystem;
 
-import org.robotdolphins.pitsystem.event.Webcast;
-import org.robotdolphins.pitsystem.event.WebcastTypes;
+import org.robotdolphins.pitsystem.Configuration.Config;
+import org.robotdolphins.pitsystem.Configuration.ConfigService;
+import org.robotdolphins.pitsystem.Data.EventInfo.Webcast;
+import org.robotdolphins.pitsystem.Data.EventInfo.WebcastTypes;
+import org.robotdolphins.pitsystem.ApiServices.EventInformationService;
+import org.robotdolphins.pitsystem.ApiServices.MatchService;
+import org.robotdolphins.pitsystem.ApiServices.WebcastService;
+import org.robotdolphins.pitsystem.Data.MatchRow;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +27,17 @@ import java.util.List;
 @EnableScheduling
 @Controller
 public class WebController {
+    @Autowired
+    private EventInformationService eventInformationService;
 
     @Autowired
     private MatchService matchService;
     @Autowired
     private TeamInformationService teamInformationService;
+    @Autowired
+    private WebcastService webcastService;
+    @Autowired
+    private ConfigService configService;
 
     private List<MatchRow> matchRows = new ArrayList<>();
     private boolean connected;
@@ -45,6 +57,7 @@ public class WebController {
         } catch (RestClientException e) {
             log.error(e.toString());
             log.error("Failed to connect to TBA to get match schedules.");
+            log.error(e.getMessage());
             matchRowsTemp.addAll(oldMatchRows);
             if (matchRowsTemp.isEmpty()) {
                 throw e;
@@ -58,7 +71,7 @@ public class WebController {
     public void refreshWebcastSource() {
         Webcast tempwebcast = webcast;
         try {
-            webcast = WebcastService.getMainWebcast();
+            webcast = webcastService.getMainWebcast();
             this.connected = true;
         } catch (RestClientException e) {
             log.error(e.toString());
@@ -73,8 +86,8 @@ public class WebController {
         log.info("Rendering Schedule");
         model.addAttribute("MatchRows", matchRows);
         model.addAttribute("connected", connected);
-        model.addAttribute("configuration", ConfigService.configuration);
-        model.addAttribute("eventName", EventInformationService.getEvent().getShortName());
+        model.addAttribute("configuration", configService.getConfiguration());
+        model.addAttribute("eventName", eventInformationService.getEvent().getShortName());
         //TODO: We only support youtube and twitch for now. Additional HTML code needs to be added to support all stream types.
         model.addAttribute("webcast", webcast);
         return "schedule";
@@ -82,7 +95,7 @@ public class WebController {
 
     @GetMapping("/settings")
     public String getSettings(Model model) {
-        model.addAttribute("configuration", ConfigService.configuration);
+        model.addAttribute("configuration", configService.getConfiguration());
         model.addAttribute("goToSchedule", false);
         model.addAttribute("events", teamInformationService.getTeamEvents());
         return "settings";
@@ -90,10 +103,11 @@ public class WebController {
 
     @PostMapping("/settings")
     public String checkSettings(@ModelAttribute Config configuration, Model model) {
-        ConfigService.configuration = new Config(configuration.baseUrl(), configuration.eventCode(), configuration.token(), configuration.teamNumber(), ConfigService.configuration.formatting());
-        model.addAttribute("configuration", ConfigService.configuration);
+        configService.setConfiguration(new Config(configuration.baseUrl(), configService.getConfiguration().matchLocation(), configuration.eventCode(), configuration.token(), configuration.teamNumber(), configService.getConfiguration().formatting()));
+        model.addAttribute("configuration", configService.getConfiguration());
         model.addAttribute("goToSchedule", true);
         refreshSchedule();
+        refreshWebcastSource();
         return "settings";
     }
 
