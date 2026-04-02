@@ -15,9 +15,9 @@ public class WebcastService {
     @Autowired
     private EventInformationService eventInformationService;
     private static final Logger log = LoggerFactory.getLogger(WebcastService.class);
-    public ArrayList<Webcast> getWebcasts(){
+    public List<Webcast> getWebcasts(){
         Event currentEvent = eventInformationService.getEvent();
-        ArrayList<Webcast> webcasts = currentEvent.webcasts();
+        List<Webcast> webcasts = currentEvent.webcasts();
         Collections.sort(webcasts);
         return webcasts;
     }
@@ -26,7 +26,7 @@ public class WebcastService {
         log.info("Main webcast's channel is {}", getWebcasts().getFirst().channel());
         return getWebcasts().getFirst();
     }
-    public ArrayList<String> getChannels(ArrayList<Webcast> webcasts) {
+    public List<String> getChannels(ArrayList<Webcast> webcasts) {
         ArrayList<String> channels = new ArrayList<>();
         for (Webcast cast : webcasts) {
             channels.add(cast.channel());

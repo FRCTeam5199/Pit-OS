@@ -30,6 +30,8 @@ public class WebController {
     @Autowired
     private MatchService matchService;
     @Autowired
+    private TeamInformationService teamInformationService;
+    @Autowired
     private WebcastService webcastService;
     @Autowired
     private ConfigService configService;
@@ -50,6 +52,7 @@ public class WebController {
             matchRowsTemp.addAll(matchService.getMatchRowsForUI());
             connected = true;
         } catch (RestClientException e) {
+            log.error(e.toString());
             log.error("Failed to connect to TBA to get match schedules.");
             matchRowsTemp.addAll(oldMatchRows);
             if (matchRowsTemp.isEmpty()) {
@@ -67,6 +70,7 @@ public class WebController {
             webcast = webcastService.getMainWebcast();
             this.connected = true;
         } catch (RestClientException e) {
+            log.error(e.toString());
             log.error("Failed to connect to TBA to refresh Webcast source.");
             webcast = tempwebcast;
             this.connected = false;
@@ -79,6 +83,7 @@ public class WebController {
         model.addAttribute("MatchRows", matchRows);
         model.addAttribute("connected", connected);
         model.addAttribute("configuration", configService.getConfiguration());
+        model.addAttribute("eventName", EventInformationService.getEvent().getShortName());
         //TODO: We only support youtube and twitch for now. Additional HTML code needs to be added to support all stream types.
         model.addAttribute("webcast", webcast);
         return "schedule";
@@ -88,6 +93,7 @@ public class WebController {
     public String getSettings(Model model) {
         model.addAttribute("configuration", configService.getConfiguration());
         model.addAttribute("goToSchedule", false);
+        model.addAttribute("events", teamInformationService.getTeamEvents());
         return "settings";
     }
 
