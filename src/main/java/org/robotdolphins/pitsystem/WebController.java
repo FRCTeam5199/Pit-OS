@@ -2,6 +2,7 @@ package org.robotdolphins.pitsystem;
 
 import org.robotdolphins.pitsystem.Configuration.Config;
 import org.robotdolphins.pitsystem.Configuration.ConfigService;
+import org.robotdolphins.pitsystem.Configuration.SystemConfig;
 import org.robotdolphins.pitsystem.Data.EventInfo.Webcast;
 import org.robotdolphins.pitsystem.Data.EventInfo.WebcastTypes;
 import org.robotdolphins.pitsystem.ApiServices.EventInformationService;
@@ -18,9 +19,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,6 +41,8 @@ public class WebController {
     private WebcastService webcastService;
     @Autowired
     private ConfigService configService;
+    @Autowired
+    private SystemService systemService;
 
     private List<MatchRow> matchRows = new ArrayList<>();
     private boolean connected;
@@ -82,7 +87,7 @@ public class WebController {
     }
 
     @GetMapping("/schedule")
-    public String getSchedule(Model model) throws IOException {
+    public String getSchedule(Model model) {
         log.info("Rendering Schedule");
         model.addAttribute("MatchRows", matchRows);
         model.addAttribute("connected", connected);
@@ -102,17 +107,35 @@ public class WebController {
     }
 
     @PostMapping("/settings")
-    public String checkSettings(@ModelAttribute Config configuration, Model model) {
+    public String checkSettings(@ModelAttribute Config configuration) {
         configService.setConfiguration(new Config(configuration.baseUrl(), configService.getConfiguration().matchLocation(), configuration.eventCode(), configuration.token(), configuration.teamNumber(), configService.getConfiguration().formatting()));
-        model.addAttribute("configuration", configService.getConfiguration());
-        model.addAttribute("goToSchedule", true);
         refreshSchedule();
         refreshWebcastSource();
-        return "settings";
+        return "GoToSchedule.html";
     }
 
     @GetMapping("/styledpage.css")
     public String getStyleSheet(Model model) {
         return "styledpage.css";
+    }
+    @GetMapping("/setup")
+    public String getSetupPage(Model model) {
+        try{
+            refreshSchedule();
+        } catch (ResourceAccessException e) {
+            try {
+                Runtime.getRuntime().exec(new String[]{"chromium","http://httpforever.com"});
+            } catch (IOException f) {
+                log.error("Failed to run chromium");
+                log.error(f.toString());
+                }
+            }
+        model.addAttribute("systemConfig", new SystemConfig(LocalDateTime.now()));
+        return "setup";
+    }
+    @PostMapping("/setup")
+    public String checkSetup(@ModelAttribute SystemConfig systemConfig, Model model){
+        systemService.applyConfig(systemConfig);
+        return "GoToSettings";
     }
 }
