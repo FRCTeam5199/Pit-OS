@@ -124,6 +124,7 @@ public class WebController {
             refreshSchedule();
         } catch (ResourceAccessException e) {
             try {
+                log.error("Captive portal detected, sending user to it.");
                 Runtime.getRuntime().exec(new String[]{"chromium","http://httpforever.com"});
             } catch (IOException f) {
                 log.error("Failed to run chromium");
