@@ -2,7 +2,9 @@ package org.robotdolphins.pitsystem;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
@@ -14,12 +16,26 @@ import java.util.stream.Collectors;
 @RestController
 public class ImageController {
 
-    @Value("${app.images-dir:src/main/resources/static/images}")
+    @Value("${app.images-dir:assets/image-cache}")
     private String imagesDir;
 
     @GetMapping("/api/images")
     public List<String> getImages() throws IOException {
         return loadImages();
+    }
+
+    @PostMapping("/api/images/reset")
+    public ResponseEntity<String> resetImages() throws IOException {
+        Path dir = findImagesDir();
+        File[] files = dir.toFile().listFiles();
+        if (files != null) {
+            for (File f : files) {
+                if (f.getName().matches("(?i).*\\.(jpg|jpeg|png|gif|webp)")) {
+                    f.delete();
+                }
+            }
+        }
+        return ResponseEntity.ok("Cache cleared");
     }
 
     private List<String> loadImages() throws IOException {
@@ -34,11 +50,9 @@ public class ImageController {
     }
 
     private Path findImagesDir() throws IOException {
-        // working directory relative (standard bootRun from project root)
         Path workdir = Paths.get(System.getProperty("user.dir")).resolve(imagesDir);
         if (Files.isDirectory(workdir)) return workdir;
 
-        // classpath (DevTools adds src/main/resources to classpath)
         ClassPathResource cpr = new ClassPathResource("static/images/");
         if (cpr.exists()) return cpr.getFile().toPath();
 

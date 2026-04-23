@@ -17,7 +17,7 @@ app_token_file.close()
 app = App(token=SLACK_BOT_TOKEN)
 
 # The path to the folder which all images are in
-images_directory = "src/main/resources/static/images"
+images_directory = "assets/image-cache"
 
 # A list representing all image urls (the private kind which cannot be seen normally)
 images = []

@@ -35,12 +35,21 @@
             border-radius: 10px;
             overflow: hidden;
             background-color: #001a33;
+            opacity: 0;
+            transition: opacity 0.7s ease;
+            position: relative;
         }
         .scroll-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
             display: flex;
             flex-direction: column;
             gap: 6px;
-            animation: scroll-up 90s linear infinite;
+            will-change: transform;
+            opacity: 0;
+            transition: opacity 1s ease;
         }
         .scroll-track img {
             width: 100%;
@@ -150,7 +159,8 @@
     </div>
     <div class="carousel-col">
         <div class="scroll-container">
-            <div class="scroll-track"></div>
+            <div class="scroll-track scroll-track-a"></div>
+            <div class="scroll-track scroll-track-b"></div>
         </div>
     </div>
 </div>
@@ -159,19 +169,45 @@
 </footer>
 <script>
     let currentImageList = [];
+    let reshuffleTimer = null;
+    let activeTrack = 'a';
+
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
 
     function buildCarousel(images) {
-        const track = document.querySelector('.scroll-track');
-        if (!track || images.length === 0) return;
+        if (reshuffleTimer) clearTimeout(reshuffleTimer);
+        const container = document.querySelector('.scroll-container');
+        const trackA = document.querySelector('.scroll-track-a');
+        const trackB = document.querySelector('.scroll-track-b');
+        if (!container || !trackA || !trackB || images.length === 0) return;
+
+        const duration = Math.max(images.length * 5, 30);
+        const next = activeTrack === 'a' ? trackB : trackA;
+        const curr = activeTrack === 'a' ? trackA : trackB;
+
         const v = Date.now();
-        const doubled = [...images, ...images];
-        track.innerHTML = doubled.map((src, i) =>
+        const shuffled = shuffle([...images]);
+        const doubled = [...shuffled, ...shuffled];
+        next.innerHTML = doubled.map((src, i) =>
             `<img src="${src}?v=${v}" alt="Photo ${(i % images.length) + 1}">`
         ).join('');
-        const duration = Math.max(images.length * 2, 10);
-        track.style.animation = 'none';
-        void track.offsetHeight;
-        track.style.animation = `scroll-up ${duration}s linear infinite`;
+        next.style.animation = 'none';
+        void next.offsetHeight;
+        next.style.animation = `scroll-up ${duration}s linear infinite`;
+
+        // Crossfade: bring next in, push curr out simultaneously
+        next.style.opacity = '1';
+        curr.style.opacity = '0';
+        container.style.opacity = '1';
+
+        activeTrack = activeTrack === 'a' ? 'b' : 'a';
+        reshuffleTimer = setTimeout(() => buildCarousel(currentImageList), duration * 1000);
     }
 
     function refreshImages() {
@@ -187,7 +223,7 @@
     }
 
     refreshImages();
-    setInterval(refreshImages, 60000);
+    setInterval(refreshImages, 300000);
 </script>
 </body>
 </html>
