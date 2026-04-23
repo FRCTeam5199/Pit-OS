@@ -23,6 +23,7 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 
 import java.io.IOException;
+import java.security.cert.CertPathBuilderException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class WebController {
     private Webcast webcast = new Webcast(WebcastTypes.direct_link,"");
 
     @Scheduled(fixedDelay = 10000)
-    public void refreshSchedule() {
+    public void refreshSchedule() throws CertPathBuilderException {
         log.info("Refreshing schedule.");
         List<MatchRow> matchRowsTemp = new ArrayList<>(matchRows.stream().toList());
         boolean connected = false;
@@ -107,7 +108,7 @@ public class WebController {
     }
 
     @PostMapping("/settings")
-    public String checkSettings(@ModelAttribute Config configuration) {
+    public String checkSettings(@ModelAttribute Config configuration) throws CertPathBuilderException {
         configService.setConfiguration(new Config(configuration.baseUrl(), configService.getConfiguration().matchLocation(), configuration.eventCode(), configuration.token(), configuration.teamNumber(), configService.getConfiguration().formatting()));
         refreshSchedule();
         refreshWebcastSource();
@@ -122,15 +123,15 @@ public class WebController {
     public String getSetupPage(Model model) {
         try{
             refreshSchedule();
-        } catch (ResourceAccessException e) {
+        } catch (ResourceAccessException | CertPathBuilderException e) {
             try {
                 log.error("Captive portal detected, sending user to it.");
-                Runtime.getRuntime().exec(new String[]{"chromium","http://httpforever.com"});
+                Runtime.getRuntime().exec(new String[]{"chromium", "http://httpforever.com"});
             } catch (IOException f) {
                 log.error("Failed to run chromium");
                 log.error(f.toString());
-                }
             }
+        }
         model.addAttribute("systemConfig", new SystemConfig(LocalDateTime.now()));
         return "setup";
     }
