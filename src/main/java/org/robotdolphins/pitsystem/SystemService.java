@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SystemService {
@@ -32,12 +34,7 @@ public class SystemService {
         playVideoFile(makeVideoFilePlayable(a.video()));
     }
     private void playVideoFile(File videoFile){
-        try {
-            Runtime.getRuntime().exec(new String[]{"vlc", videoFile.getAbsolutePath()});
-        } catch (IOException e) {
-            log.error("Error running vlc");
-            log.error(e.toString());
-        }
+        runBinaryAsUser("vlc", new String[]{videoFile.getAbsolutePath()});
     }
     private File makeVideoFilePlayable(MultipartFile video) {
         File cachedVideo = new File("./assets/video.mp4");
@@ -52,5 +49,23 @@ public class SystemService {
             log.error(e.toString());
         }
         return cachedVideo;
+    }
+    private void runBinaryAsUser(String binary, String[] args) {
+        if(System.getProperty("os.name").startsWith("Windows")) {
+            log.error("Running windows binaries isn't supported, tried to run {}", binary);
+            return;
+        }
+        try {
+            ArrayList<String> command = new ArrayList<>(List.of(new String[]{"systemd-run", "--uid=rdos", "--user-unit=default.target", "--", binary}));
+            command.add(binary);
+            command.addAll(List.of(args));
+            Runtime.getRuntime().exec((String[]) command.stream().toArray());
+        } catch (IOException f) {
+            log.error("Failed to run {}", binary);
+            log.error(f.toString());
+        }
+    }
+    public void runCaptivePortal(){
+        runBinaryAsUser("chromium", new String[]{"http://httpforever.com"});
     }
 }

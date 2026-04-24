@@ -124,13 +124,8 @@ public class WebController {
         try{
             refreshSchedule();
         } catch (ResourceAccessException | CertPathBuilderException e) {
-            try {
-                log.error("Captive portal detected, sending user to it.");
-                Runtime.getRuntime().exec(new String[]{"chromium", "http://httpforever.com"});
-            } catch (IOException f) {
-                log.error("Failed to run chromium");
-                log.error(f.toString());
-            }
+            log.error("Captive portal detected, sending user to it.");
+            systemService.runCaptivePortal();
         }
         model.addAttribute("systemConfig", new SystemConfig(LocalDateTime.now()));
         return "setup";
