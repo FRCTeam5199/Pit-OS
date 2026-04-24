@@ -41,3 +41,6 @@ out/
 
 ### Auth Key ###
 assets/AuthKey
+
+### Generated Temporary Video ###
+assets/video.mp4

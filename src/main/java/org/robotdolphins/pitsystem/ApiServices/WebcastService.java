@@ -2,15 +2,16 @@ package org.robotdolphins.pitsystem.ApiServices;
 
 import org.robotdolphins.pitsystem.Data.Event;
 import org.robotdolphins.pitsystem.Data.EventInfo.Webcast;
+import org.robotdolphins.pitsystem.Data.EventInfo.WebcastTypes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.NoSuchElementException;
 
 @Service
 public class WebcastService {
@@ -24,6 +25,11 @@ public class WebcastService {
         return webcasts;
     }
     public Webcast getMainWebcast() {
+        try{
+            getWebcasts().getFirst();
+        } catch (NoSuchElementException e){
+            return new Webcast(WebcastTypes.invalid, "none");
+        }
         log.info("Main webcast is {}", getWebcasts().getFirst().type());
         log.info("Main webcast's channel is {}", getWebcasts().getFirst().channel());
         return getWebcasts().getFirst();

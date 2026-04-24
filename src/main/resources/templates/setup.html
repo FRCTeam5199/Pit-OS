@@ -1,0 +1,67 @@
+<html lang="en_US" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>FRC Schedule Setup</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
+            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styledpage.css">
+    <link rel="icon" href="../static/favicon.ico" type="image/x-icon">
+</head>
+<body>
+<div class="heading-block">
+    <div style="display: inline-block; width: 48px; height: 48px;">
+        <a href="/">
+            <img src="favicon.ico" style="width: 48px;" alt="5199 logo">
+        </a>
+    </div>
+    <h1 style="color: #ffffff;" class="centered">5199's PitOS Setup Page</h1>
+    <a href="settings" class="btn btn-secondary btn-lg position-absolute top-0 end-0"><img src="settings.png" height="25" alt="settings logo"></a>
+</div>
+<div style="display: flex">
+<div style="flex: 5; max-width:1062px">
+<form class="flex-nowrap text-light" enctype="multipart/form-data" th:action="@{/setup}" th:object="${systemConfig}" method="post">
+    <div class="input-group">
+        <label>Year:
+            <input class="form-control" required type="number" min="2026" th:field="*{year}">
+        </label>
+        <label>Month:
+            <input class="form-control" required type="number" min="1" max="12" th:field="*{month}">
+        </label>
+        <label>Day:
+            <input class="form-control" required type="number" min="0" max="31" th:field="*{day}">
+        </label>
+    </div>
+    <div class="input-group">
+        <label>Hour (0-23):
+            <input class="form-control" required type="number" min="0" max="23" th:field="*{hour}">
+        </label>
+        <label>Minute:
+            <input class="form-control" required type="number" min="0" max="59" th:field="*{minute}">
+        </label>
+    </div>
+    <div class="input-group">
+        <label>Video file to play:
+            <input class="form-control" required type="file" accept="video/mp4" th:field="*{video}">
+        </label>
+    </div>
+    <div class="input-group">
+        <a href="/">
+            <button class="btn btn-secondary" type="button">Cancel</button>
+        </a>
+        <button class="btn btn-primary" type="submit" value="Upload">Finish Setup</button>
+    </div>
+</form>
+</div>
+<div style="flex: 3">
+    <p style="color: #ffffff">
+        PitOS runs in a web browser which is fullscreened.<br>
+        You can use F11 to turn off fullscreen so you can connect to the internet.<br>
+        Just simply hold "<span style="color:#fd3e3e">fn</span>" and press "<span style="color:#fd3e3e">F11</span>" to disable fullscreen.<br>
+        When you're done connecting to the internet, move the window to the monitor you want pitOS on, and hold "<span style="color:#fd3e3e">fn</span>" and press "<span style="color:#fd3e3e">F11</span>" to re-enable fullscreen.<br>
+    </p>
+</div>
+</div>
+</body>
+</html>
