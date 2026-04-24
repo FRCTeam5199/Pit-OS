@@ -35,7 +35,7 @@ public class SystemService {
         playVideoFile(makeVideoFilePlayable(a.video()));
     }
     private void playVideoFile(File videoFile){
-        runBinaryAsUser("vlc", new String[]{videoFile.getAbsolutePath()});
+        runBinaryAsUser("vlc", new String[]{videoFile.getAbsolutePath(), "-R"});
     }
     private File makeVideoFilePlayable(MultipartFile video) {
         File cachedVideo = new File("./assets/video.mp4");
@@ -57,7 +57,7 @@ public class SystemService {
             return;
         }
         try {
-            ArrayList<String> command = new ArrayList<String>(List.of(new String[]{"systemd-run", "--uid=rdos", "--unit=vlc.service", "-R", "-E", "DISPLAY=:0"}));
+            ArrayList<String> command = new ArrayList<String>(List.of(new String[]{"systemd-run", "--uid=rdos", "--unit=vlc.service", "-E", "DISPLAY=:0"}));
             command.add(binary);
             command.addAll(List.of(args));
             Runtime.getRuntime().exec(command.toArray(new String[0]));
