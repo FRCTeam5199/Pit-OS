@@ -30,7 +30,7 @@ image_folder_path = os.path.join(os.path.dirname(current_path), images_directory
 # Writes the list of images to the images folder, 
 # replacing the images once there are more than the maximum allowed
 def write_image_to_folder(images):
-    if len(images) <= 20:
+    if len(images) <= 30:
         '''for file in os.listdir(images_directory): 
             if file.endswith('.jpg'):
                 os.remove(file)'''

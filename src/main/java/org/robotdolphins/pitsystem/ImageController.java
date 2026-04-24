@@ -1,7 +1,6 @@
 package org.robotdolphins.pitsystem;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,43 +18,44 @@ public class ImageController {
     @Value("${app.images-dir:assets/image-cache}")
     private String imagesDir;
 
+    @Value("${app.preloaded-images-dir:assets/preloaded-images}")
+    private String preloadedImagesDir;
+
+    private static final String IMAGE_PATTERN = "(?i).*\\.(jpg|jpeg|png|gif|webp)";
+
     @GetMapping("/api/images")
     public List<String> getImages() throws IOException {
         return loadImages();
     }
 
     @PostMapping("/api/images/reset")
-    public ResponseEntity<String> resetImages() throws IOException {
-        Path dir = findImagesDir();
+    public ResponseEntity<String> resetImages() {
+        Path dir = Paths.get(System.getProperty("user.dir")).resolve(imagesDir);
         File[] files = dir.toFile().listFiles();
         if (files != null) {
             for (File f : files) {
-                if (f.getName().matches("(?i).*\\.(jpg|jpeg|png|gif|webp)")) {
-                    f.delete();
-                }
+                if (f.getName().matches(IMAGE_PATTERN)) f.delete();
             }
         }
         return ResponseEntity.ok("Cache cleared");
     }
 
     private List<String> loadImages() throws IOException {
-        Path dir = findImagesDir();
-        File[] files = dir.toFile().listFiles();
-        if (files == null) return Collections.emptyList();
-        return Arrays.stream(files)
-                .filter(f -> f.getName().matches("(?i).*\\.(jpg|jpeg|png|gif|webp)"))
-                .map(f -> "/images/" + f.getName())
+        LinkedHashSet<String> names = new LinkedHashSet<>();
+        collectNames(Paths.get(System.getProperty("user.dir")).resolve(imagesDir), names);
+        collectNames(Paths.get(System.getProperty("user.dir")).resolve(preloadedImagesDir), names);
+        return names.stream()
+                .map(n -> "/images/" + n)
                 .sorted()
                 .collect(Collectors.toList());
     }
 
-    private Path findImagesDir() throws IOException {
-        Path workdir = Paths.get(System.getProperty("user.dir")).resolve(imagesDir);
-        if (Files.isDirectory(workdir)) return workdir;
-
-        ClassPathResource cpr = new ClassPathResource("static/images/");
-        if (cpr.exists()) return cpr.getFile().toPath();
-
-        throw new IOException("Images directory not found. Tried: " + workdir);
+    private void collectNames(Path dir, LinkedHashSet<String> names) {
+        File[] files = dir.toFile().listFiles();
+        if (files == null) return;
+        Arrays.stream(files)
+                .filter(f -> f.getName().matches(IMAGE_PATTERN))
+                .map(File::getName)
+                .forEach(names::add);
     }
 }

@@ -13,16 +13,18 @@ public class WebConfig implements WebMvcConfigurer {
     @Value("${app.images-dir:assets/image-cache}")
     private String imagesDir;
 
+    @Value("${app.preloaded-images-dir:assets/preloaded-images}")
+    private String preloadedImagesDir;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        String absolutePath = Paths.get(System.getProperty("user.dir"))
-                .resolve(imagesDir)
-                .toAbsolutePath()
-                .toString()
-                .replace("\\", "/");
+        String cachePath = Paths.get(System.getProperty("user.dir"))
+                .resolve(imagesDir).toAbsolutePath().toString().replace("\\", "/");
+        String preloadedPath = Paths.get(System.getProperty("user.dir"))
+                .resolve(preloadedImagesDir).toAbsolutePath().toString().replace("\\", "/");
 
         registry.addResourceHandler("/images/**")
-                .addResourceLocations("file:" + absolutePath + "/")
+                .addResourceLocations("file:" + cachePath + "/", "file:" + preloadedPath + "/")
                 .setCachePeriod(0);
     }
 }
