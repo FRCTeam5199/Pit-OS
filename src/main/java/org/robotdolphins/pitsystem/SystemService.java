@@ -57,7 +57,7 @@ public class SystemService {
             return;
         }
         try {
-            ArrayList<String> command = new ArrayList<String>(List.of(new String[]{"systemd-run", "--uid=rdos", "--unit=vlc.service", "-R", "-E", "DISPLAY=:0", binary}));
+            ArrayList<String> command = new ArrayList<String>(List.of(new String[]{"systemd-run", "--uid=rdos", "--unit=vlc.service", "-R", "-E", "DISPLAY=:0"}));
             command.add(binary);
             command.addAll(List.of(args));
             Runtime.getRuntime().exec(command.toArray(new String[0]));
