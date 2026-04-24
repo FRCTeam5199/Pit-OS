@@ -8,6 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -56,10 +57,10 @@ public class SystemService {
             return;
         }
         try {
-            ArrayList<String> command = new ArrayList<>(List.of(new String[]{"systemd-run", "--uid=rdos", "--user-unit=default.target", "--", binary}));
+            ArrayList<String> command = new ArrayList<String>(List.of(new String[]{"systemd-run", "--uid=rdos", "--user-unit=default.target", "--", binary}));
             command.add(binary);
             command.addAll(List.of(args));
-            Runtime.getRuntime().exec((String[]) command.stream().toArray());
+            Runtime.getRuntime().exec(command.toArray(new String[0]));
         } catch (IOException f) {
             log.error("Failed to run {}", binary);
             log.error(f.toString());
