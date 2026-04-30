@@ -9,6 +9,60 @@
             integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq"
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="styledpage.css">
+    <style>
+        .schedule-layout {
+            display: flex;
+            align-items: flex-start;
+        }
+        .schedule-table-col {
+            flex: 1;
+            min-width: 0;
+            overflow-x: auto;
+        }
+        .carousel-col {
+            width: 240px;
+            min-width: 240px;
+            position: sticky;
+            top: 48px;
+            height: calc(100vh - 48px);
+            padding: 8px 8px 8px 4px;
+            display: flex;
+            align-items: center;
+        }
+        .scroll-container {
+            width: 100%;
+            height: calc(100vh - 80px);
+            border-radius: 10px;
+            overflow: hidden;
+            background-color: #001a33;
+            opacity: 0;
+            transition: opacity 0.7s ease;
+            position: relative;
+        }
+        .scroll-track {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            will-change: transform;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .scroll-track img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 6px;
+            flex-shrink: 0;
+        }
+        @keyframes scroll-up {
+            0%   { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+    </style>
 </head>
 <body>
 <div class="heading-block">
@@ -22,86 +76,154 @@
     </h1>
     <a href="settings" class="btn btn-secondary btn-lg position-absolute top-0 end-0"><img src="settings.png" height="25" alt="settings logo"></a>
 </div>
-<table class="table table-custom text-center">
-    <thead class="sticky-top bgCol">
-    <tr>
-        <th scope="col">Match Number</th>
-        <th scope="col">Time</th>
-        <th scope="col">Red Alliance</th>
-        <th scope="col">Red Score</th>
-        <th scope="col">Blue Score</th>
-        <th scope="col">Blue Alliance</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="match:${MatchRows}">
-        <td th:text="${match.matchName}" style="width: 10%"></td>
-        <td th:text="${match.time}"></td>
-        <span th:if="${match.winner == 'red'}">
-        <td class="winCol">
-          <span th:each="team:${match.redAlliance}">&nbsp
-            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
-          </span>
-        </td>
-      </span>
-        <span th:unless="${match.winner == 'red'}">
-        <td class="loseCol">
-          <span th:each="team:${match.redAlliance}">&nbsp
-            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
-          </span>
-        </td>
-      </span>
+<div class="schedule-layout">
+    <div class="schedule-table-col">
+        <table class="table table-custom text-center">
+            <thead class="sticky-top bgCol">
+            <tr>
+                <th scope="col">Match Number</th>
+                <th scope="col">Time</th>
+                <th scope="col">Red Alliance</th>
+                <th scope="col">Red Score</th>
+                <th scope="col">Blue Score</th>
+                <th scope="col">Blue Alliance</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="match:${MatchRows}">
+                <td th:text="${match.matchName}" style="width: 10%"></td>
+                <td th:text="${match.time}"></td>
+                <span th:if="${match.winner == 'red'}">
+                <td class="winCol">
+                  <span th:each="team:${match.redAlliance}">&nbsp
+                    <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
+                  </span>
+                </td>
+              </span>
+                <span th:unless="${match.winner == 'red'}">
+                <td class="loseCol">
+                  <span th:each="team:${match.redAlliance}">&nbsp
+                    <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
+                  </span>
+                </td>
+              </span>
 
-        <a th:if="${match.winner == 'red'}">
-            <td class="redColWin border" th:text="${match.redScore}"></td>
-        </a>
-        <a th:unless="${match.winner == 'red'}">
-            <td class="redColLose border" th:text="${match.redScore}"></td>
-        </a>
+                <a th:if="${match.winner == 'red'}">
+                    <td class="redColWin border" th:text="${match.redScore}"></td>
+                </a>
+                <a th:unless="${match.winner == 'red'}">
+                    <td class="redColLose border" th:text="${match.redScore}"></td>
+                </a>
 
-        <a th:if="${match.winner == 'blue'}">
-            <td class="blueColWin border" th:text="${match.blueScore}"></td>
-        </a>
-        <a th:unless="${match.winner == 'blue'}">
-            <td class="blueColLose border" th:text="${match.blueScore}"></td>
-        </a>
+                <a th:if="${match.winner == 'blue'}">
+                    <td class="blueColWin border" th:text="${match.blueScore}"></td>
+                </a>
+                <a th:unless="${match.winner == 'blue'}">
+                    <td class="blueColLose border" th:text="${match.blueScore}"></td>
+                </a>
 
-        <span th:if="${match.winner == 'blue'}">
-        <td class="winCol">
-          <span th:each="team:${match.blueAlliance}">&nbsp
-            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
-          </span>
-        </td>
-      </span>
-        <span th:unless="${match.winner == 'blue'}">
-        <td class="loseCol">
-          <span th:each="team:${match.blueAlliance}">&nbsp
-            <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
-          </span>
-        </td>
-      </span>
-    </tr>
-    </tbody>
-</table>
-<iframe
-        width="500"
-        height="300"
-        th:if="${webcast.type.name() == 'youtube'}"
-        th:src="|https://www.youtube.com/embed/${webcast.channel}?autoplay=1|"
-        title="YouTube video player"
-        frameborder="0"
-        allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-        referrerpolicy="strict-origin-when-cross-origin">
-</iframe>
-<iframe
-        th:if="${webcast.type.name() == 'twitch'}"
-        th:src="|https://player.twitch.tv/?channel=${webcast.channel}&parent=localhost|"
-        height="300"
-        width="500"
-        allowfullscreen>
-</iframe>
-</body>
+                <span th:if="${match.winner == 'blue'}">
+                <td class="winCol">
+                  <span th:each="team:${match.blueAlliance}">&nbsp
+                    <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
+                  </span>
+                </td>
+              </span>
+                <span th:unless="${match.winner == 'blue'}">
+                <td class="loseCol">
+                  <span th:each="team:${match.blueAlliance}">&nbsp
+                    <span th:style="|font-weight: ${team.fontWeight}; color: ${team.color};|" th:text="${team.text}"></span>
+                  </span>
+                </td>
+              </span>
+            </tr>
+            </tbody>
+        </table>
+        <iframe
+                width="500"
+                height="300"
+                th:if="${webcast.type.name() == 'youtube'}"
+                th:src="|https://www.youtube.com/embed/${webcast.channel}?autoplay=1|"
+                title="YouTube video player"
+                frameborder="0"
+                allow="autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin">
+        </iframe>
+        <iframe
+                th:if="${webcast.type.name() == 'twitch'}"
+                th:src="|https://player.twitch.tv/?channel=${webcast.channel}&parent=localhost|"
+                height="300"
+                width="500"
+                allowfullscreen>
+        </iframe>
+    </div>
+    <div class="carousel-col">
+        <div class="scroll-container">
+            <div class="scroll-track scroll-track-a"></div>
+            <div class="scroll-track scroll-track-b"></div>
+        </div>
+    </div>
+</div>
 <footer>
     <span th:style="'font-weight: bold; color:#ff4444; display:' + (${connected}? 'none' : 'inline')">NO INTERNET CONNECTION!</span>
 </footer>
+<script>
+    let currentImageList = [];
+    let reshuffleTimer = null;
+    let activeTrack = 'a';
+
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    function buildCarousel(images) {
+        if (reshuffleTimer) clearTimeout(reshuffleTimer);
+        const container = document.querySelector('.scroll-container');
+        const trackA = document.querySelector('.scroll-track-a');
+        const trackB = document.querySelector('.scroll-track-b');
+        if (!container || !trackA || !trackB || images.length === 0) return;
+
+        const duration = Math.max(images.length * 5, 30);
+        const next = activeTrack === 'a' ? trackB : trackA;
+        const curr = activeTrack === 'a' ? trackA : trackB;
+
+        const v = Date.now();
+        const shuffled = shuffle([...images]);
+        const doubled = [...shuffled, ...shuffled];
+        next.innerHTML = doubled.map((src, i) =>
+            `<img src="${src}?v=${v}" alt="Photo ${(i % images.length) + 1}">`
+        ).join('');
+        next.style.animation = 'none';
+        void next.offsetHeight;
+        next.style.animation = `scroll-up ${duration}s linear infinite`;
+
+        // Crossfade: bring next in, push curr out simultaneously
+        next.style.opacity = '1';
+        curr.style.opacity = '0';
+        container.style.opacity = '1';
+
+        activeTrack = activeTrack === 'a' ? 'b' : 'a';
+        reshuffleTimer = setTimeout(() => buildCarousel(currentImageList), duration * 1000);
+    }
+
+    function refreshImages() {
+        fetch('/api/images')
+            .then(r => r.json())
+            .then(images => {
+                if (JSON.stringify(images) !== JSON.stringify(currentImageList)) {
+                    currentImageList = images;
+                    buildCarousel(images);
+                }
+            })
+            .catch(() => console.warn('Could not load image list'));
+    }
+
+    refreshImages();
+    setInterval(refreshImages, 300000);
+</script>
+</body>
 </html>
